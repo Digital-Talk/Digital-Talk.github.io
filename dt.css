@@ -73,10 +73,12 @@ h4{
 } 
 
 .deadline {
-    border: 4px solid white;
+    background-color:white;
+    color:black;
     padding: 10px;
-    font-size:1.5em;
     margin: 5px 0px;
+    font-size:1.5em;
+    font-weight:bold;
     text-align:center;
 } 
 
@@ -104,6 +106,11 @@ li p {
 
 b {
     font-weight:bold;
+}
+strong {
+    font-weight:bold;
+    color: red;
+    font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
 }
 tt {
     font-weight:bold;
