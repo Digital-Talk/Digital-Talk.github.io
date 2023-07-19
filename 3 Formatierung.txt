@@ -1,0 +1,262 @@
+
+ Kapitel 3: Textformatierung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hier geht es um die grundlegenden Möglichkeiten, wie man mit dem Konverter
+den Text formatieren kann:
+	3.1 die fünf verschiedenen Modi
+	3.2 linksbündig/rechtsbündig/zentriert
+	3.3 "pre-formatted"
+	3.4 der zwei-Spalten-Modus
+	3.5 vertikale Formatierung
+
+
+ 3.1 die fünf verschiedenen Modi
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Der Konverter startet im Modus "linksbündiger Text", mit den folgenden
+^-Zeilenbefehlen kann man jederzeit zwischen insgesamt fünf verschiedenen
+Modi wechseln:
+
+^left LINKS,RECHTS
+	...linksbündig mit Wordwrap (in diesem Modus startet der Konverter,
+	beide Seitenränder sind auf Null eingestellt).
+^right LINKS,RECHTS
+	...rechtsbündig mit Wordwrap
+^center LINKS,RECHTS
+	...zentriert mit Wordwrap
+^pre LINKS,RECHTS
+	..."pre-formatted", d.h. der Text wird gar nicht umformatiert, er
+	muss also bereits passend formatiert sein.
+^leftright LINKS,RECHTS
+	...dies ist der zwei-Spalten-Modus, dabei wird die linke Spalte
+	linksbündig und die rechte Spalte rechtsbündig dargestellt.
+
+"LINKS" und "RECHTS" sind hier optionale Zahlen, mit denen man die Breite
+der Seitenränder festlegen kann. Werden die Zahlen weggelassen, haben beide
+Ränder die Breite Null.
+
+Für jeden dieser fünf Befehle existiert auch eine Kurzversion:
+^l LINKS,RECHTS         genau wie ^left
+^r LINKS,RECHTS         genau wie ^right
+^c LINKS,RECHTS         genau wie ^center
+^p LINKS,RECHTS         genau wie ^pre
+^lr LINKS,RECHTS        genau wie ^leftright
+
+Jeder Wechsel zwischen diesen Modi geht mit einem Zeilenumbruch einher. Das
+geht so weit, dass auch ein Wechsel wie z.B. von "links" zu "links", der ja
+eigentlich gar kein Wechsel ist, einen Zeilenumbruch forciert.
+
+Wie man sieht, gibt es derzeit keinen Modus für Blocksatz - das könnte ich
+zwar noch dranstricken, aber sonderlich viel Lust habe ich nicht dazu, und
+zwar aus dem simplen Grund, dass Blocksatz ohne proportionales Charset immer
+ziemlich bescheiden aussieht, insbesondere bei einer Zeilenlänge von nur 40
+Zeichen.
+
+In den folgenden Abschnitten werden die einzelnen Modi genauer beschrieben.
+
+
+ 3.2 linksbündig/rechtsbündig/zentriert
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Diese drei Modi unterscheiden sich nur durch die Ausrichtung der Zeilen
+voneinander (d.h. dadurch, wo das Layout mit Spaces aufgefüllt wird!) und
+werden daher hier gemeinsam beschrieben. In diesen Modi gilt:
+
+Es gibt ein automatisches Wordwrap. Umgebrochen wird bei Spaces, Newlines,
+hinter Bindestrichen und hinter Trennvorschlägen im Wort. Wird das
+Python-Modul für automatische Silbentrennung benutzt, so wird dieses für
+jedes Wort befragt, es wird also ggfs. an der passenden Stelle ein
+Bindestrich eingefügt und dann dort umgebrochen.
+
+Mehrere  Spaces  hintereinander  werden  wie  ein  einziges  Space
+behandelt.  Will  man  das  umgehen,  muss  man  "non-breaking  spaces"
+benutzen,  siehe  dazu  Kapitel  4.1.
+
+Hier als Beispiel, wie das Ergebnis aussieht, wenn man die beiden obigen
+Absätze dem Konverter vorsetzt (mit Silbentrennung):
+
+	| Es gibt ein automatisches Wordwrap. Um-  |
+	| gebrochen wird bei Spaces, Newlines,     |
+	| hinter Bindestrichen und hinter Trenn-   |
+	| vorschlägen im Wort. Wird das Python-Mo- |
+	| dul für automatische Silbentrennung be-  |
+	| nutzt, so wird dieses für jedes Wort be- |
+	| fragt, es wird also ggfs. an der passen- |
+	| den Stelle ein Bindestrich eingefügt und |
+	| dann dort umgebrochen.                   |
+	| Mehrere Spaces hintereinander werden wie |
+	| ein einziges Space behandelt. Will man   |
+	| das umgehen, muss man "non-breaking      |
+	| spaces" benutzen, siehe dazu Kapitel     |
+	| 4.1.                                     |
+
+Wie man sieht, sind die doppelten Spaces zu Einzel-Spaces geworden.
+Weiterhin ist aus der Leerzeile zwischen den Absätzen ein Zeilenumbruch
+geworden. Das ist durchaus Absicht: Da ein Zeilenumbruch in der Eingabedatei
+wie ein Space behandelt wird, muss man, wenn man einen Zeilenumbruch oder
+Leerzeilen erzeugen will, einfach immer eine Leerzeile mehr angeben.
+Das heißt:
+Eine Leerzeile erzeugt einen Zeilenumbruch.
+Zwei Leerzeilen erzeugen eine Leerzeile.
+N+1 Leerzeilen erzeugen N Leerzeilen.
+
+Es gibt aber noch eine weitere Besonderheit bei Leerzeilen: Immer wenn der
+Konverter eine neue DT-Textseite anfängt, werden Leerzeilen unterdrückt.
+Denn wenn ein neuer Absatz eh auf eine neue Seite rutscht, wäre es ja
+Unsinn, oben auf der Seite noch Platz mit Leerzeilen zu verschwenden (wenn
+man das wirklich will, kann man es natürlich trotzdem tun, siehe weiter
+unten in Abschnitt 3.5).
+
+Statt mit Leerzeilen kann man einen Zeilenumbruch im Text auch durch "\\"
+forcieren, also durch zwei Backslashes hintereinander. Analog zu "am Anfang
+einer Seite werden Leerzeilen unterdrückt" gilt hier dann auch: "am Anfang
+einer Zeile werden Zeilenumbrüche unterdrückt". Man kann also mit \\ einen
+Zeilenumbruch forcieren, aber mit \\\\ nicht zwei davon - denn nach dem
+ersten Umbruch steht der gedachte "Cursor" ja schon ganz links.
+
+
+ 3.3 "pre-formatted"
+~~~~~~~~~~~~~~~~~~~~~
+
+Der Befehl ^pre bzw. ^p aktiviert den Modus für vorformatierten Text, der
+Konverter ändert also dann nichts mehr am Layout. Das ist nützlich für
+Assemblerschnipsel oder Gedichte oder so etwas. Beispiel:
+
+^pre
+        ldx #8
+        lda #$20
+loop    jsr $ffd2
+        dex
+        bne loop
+^left
+
+Diese Zeilen landen dann genau so in der Ausgabedatei, ohne dass sie vom
+Wordwrap kaputtformatiert werden. Die Zeilen dürfen dann natürlich nicht
+länger als 40 Zeichen sein, bzw. müssen sie sogar entsprechend kürzer sein,
+falls man bei "^pre" noch Zahlen für Seitenränder angegeben hat. In diesem
+Modus muss man also selber die Zeilenlängen beachten - ist eine Zeile zu
+lang, gibt der Konverter eine entsprechende Fehlermeldung aus.
+
+Da es in diesem Modus kein Wordwrap gibt, gibt es natürlich auch keine
+Silbentrennung, und sämtliche obigen Hinweise über Spaces und Leerzeilen
+gelten hier ebenfalls nicht.
+
+
+ 3.4 der zwei-Spalten-Modus
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Mit ^leftright bzw. ^lr schaltet man in den zwei-Spalten-Modus. Dieser ist
+nützlich für einfache Tabellen, dabei wird die linke Spalte linksbündig
+formatiert, die rechte Spalte rechtsbündig. Beispiel: Aus
+
+Unsere Wertung:
+^leftright 18,0
+Affen.^viele
+Giraffen ^keine
+Schweine.^35
+Meerschweinchen ^alle
+Katzen.^zuwenige
+^left
+Toller Zoo!
+
+wird dann:
+	| Unsere Wertung:                          |
+	|                   Affen............viele |
+	|                   Giraffen         keine |
+	|                   Schweine............35 |
+	|                   Meerschweinchen   alle |
+	|                   Katzen........zuwenige |
+	| Toller Zoo!                              |
+
+Die Trennstelle zwischen den Spalten muss hier in jeder Zeile mit einem
+'^'-Zeichen markiert werden, der Bereich zwischen den Spalten wird dann mit
+dem letzten Zeichen vor dem '^' aufgefüllt, in diesem Beispiel also mit
+Punkten und Spaces.
+Passen die beiden Textteile nicht gemeinsam in eine Zeile, bekommen sie
+separate Zeilen, natürlich die erste linksbündig und die zweite
+rechtsbündig.
+
+Auch in diesem Modus gilt, dass man selbst die maximale Zeilenlänge
+beachten muss, und dass es weder Wordwrap noch Silbentrennung gibt.
+
+Die Möglichkeit, mit der Kombination aus einem Füllzeichen und '^' eine
+Zeile auf ihre maximale Breite aufzufüllen, funktioniert inzwischen auch in
+den anderen Modi. So kann man z.B. dafür sorgen, dass am Ende eines
+linksbündigen Texts die Unterschrift ganz rechts steht, ohne erst in den
+rechtsbündigen Modus umschalten zu müssen. Beispiel: Aus
+
+...und daher wissen wir, dass die Erde bananenförmig ist. ^Heinz\\
+
+wird dann:
+        | ...und daher wissen wir, dass die Erde   |
+        | bananenförmig ist.                 Heinz |
+
+
+ 3.5 vertikale Formatierung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Es gibt drei Zeilenbefehle, um die vertikale Formatierung zu beeinflussen:
+Zum einen den Befehl "^headfoot", der die Breite des oberen und des unteren
+Randes festlegt, und außerdem noch "^line" und "^minfree", mit denen man
+"vorwärts" zu einer bestimmten Zeile auf der aktuellen Seite bzw. auf die
+nächste Seite springen kann:
+
+^headfoot OBEN, UNTEN
+^line ZEILENNUMMER
+^minfree ZEILEN
+
+
+Der Befehl "^headfoot" legt fest, wieviele Zeilen auf jeder Seite oben und
+unten frei bleiben sollen. Dies bezieht sich allerdings nur auf den Text;
+Grafiken können überall plaziert werden, auch auf diesen Rändern.
+
+Beispiele:
+^headfoot 0, 0          (keine Ränder, der Text geht über die ganze Seite)
+^headfoot 2, 2          (oben und unten jeweils zwei Zeilen frei)
+^headfoot 4, 4          (jeweils vier Zeilen frei, derzeit Voreinstellung)
+^headfoot 4, 5          (so wie "früher", d.h. vor der DT #113)
+
+
+Der Befehl "^line" fügt Leerzeilen ein, bis man die angegebene Zeile
+erreicht hat. Ist der "Cursor" auf der aktuellen Ausgabeseite bereits an
+dieser Zeile vorbei, so springt er zu der besagten Zeile auf der nächsten
+Seite. Mit diesem Befehl kann man also Seitenumbrüche forcieren oder z.B.
+auch in die letzte Zeile der Seite springen, damit die Signatur des Autors
+immer ganz unten rechts plaziert wird.
+Gezählt wird von oben, d.h. 0 ist die erste Zeile, 1 ist die zweite, 2 ist
+die dritte usw.
+Negative Zahlen zählen von unten, d.h. -1 ist die letzte Zeile, -2 ist die
+vorletzte usw.
+Achtung, die Zeilennummer bezieht sich auf den beschreibbaren Bereich
+zwischen dem oberen und dem unteren Seitenrand, nicht auf den Bildschirm.
+Die maximal erlaubten Werte hängen also davon ab, wie groß die Ränder
+eingestellt sind.
+
+Beispiele:
+^line 0         (dies ist gleichbedeutung mit einem Seitenumbruch)
+^line 8         (geht - bei Standardrändern - in die mittlere Zeile)
+^line -1        (geht nach ganz unten)
+
+
+Der Befehl "^minfree" kann ebenfalls Leerzeilen einfügen, arbeitet aber
+anders: Er sorgt für einen Seitenumbruch, falls auf der aktuellen Seite
+weniger als die genannte Zahl von Zeilen frei sind. So kann man
+sicherstellen, dass ein neuer Absatz nicht in der letzten oder vorletzten
+Zeile einer Seite beginnt (es werden "Schusterjungen" verhindert).
+Außerdem kann man so dafür sorgen, dass die doppelt hohe Schrift oder die
+2x2-Icons nicht in der letzten Zeile einer Seite benutzt werden.
+
+Beispiel:
+^minfree 3      (falls wir bereits die vorletzte oder letzte Zeile der Seite
+                erreicht haben, geh gleich auf die nächste Seite!)
+
+
+"^line" und "^minfree" können recht nützlich sein, um ganz zum Schluss dafür
+zu sorgen, dass der Text sinnvoll über die einzelnen Seiten verteilt wird.
+Man kann sich allerdings die Arbeit erleichtern, indem man in einem längeren
+Text diese Befehle nicht direkt einfügt, sondern sich stattdessen Makros
+definiert (siehe Kapitel 6). Wenn man dann merkt, dass man das Layout noch
+einmal grundlegend ändern will, muss man nur die Makrodefinition ändern und
+nicht etliche Befehle im Text.
+

@@ -1,0 +1,93 @@
+
+ Kapitel 5: Schriftarten
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Das Magazinsystem der DT enthält verschiedene Schriftarten. Da der Text im
+Grafikmodus angezeigt wird, können alle Schriftarten gleichzeitig angezeigt
+werden, und mit dem Konverter kann man jederzeit zwischen diesen
+Schriftarten wechseln.
+	5.1 Welche Schriftarten vorhanden sind
+	5.2 Wie man zwischen den Schriftarten wechselt
+
+
+ 5.1 Welche Schriftarten vorhanden sind
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Aufgrund der Art und Weise, wie die verschiedenen Schriftzeichen in den
+Zeichensätzen angeordnet sind, sind nicht alle Zeichen in allen Schriftarten
+verfügbar, d.h. nicht alle Schriftarten sind "vollständig".
+Im Einzelnen sind diese Zeichensätze bzw. Schriftarten vorhanden:
+
+- ein "normaler" Zeichensatz mit Kleinbuchstaben, Ziffern, Satzzeichen,
+  Sonderzeichen, Großbuchstaben sowie einem weiteren Satz Großbuchstaben in
+  einer alternativen Schriftart ("Kapitälchenschrift 1"),
+
+- ein "fetter" Zeichensatz mit Kleinbuchstaben, Ziffern, Satzzeichen,
+  Sonderzeichen, Großbuchstaben sowie einem weiteren Satz Großbuchstaben in
+  einer weiteren alternativen Schriftart ("Kapitälchenschrift 2"),
+
+- zwei weitere Zeichensätze, die gemeinsam einen Zeichensatz doppelter Höhe
+  bilden, mit Großbuchstaben, Ziffern, Satzzeichen, Sonderzeichen, einem
+  zweiten (verschnörkelten) Satz von Großbuchstaben sowie einem Satz von 13
+  vordefinierten Icons, d.h. aus 2x2 Zeichen bestehenden Grafikzeichen,
+
+- sowie vier weitere Zeichensätze mit jeweils 124 Zeichen, die zur Laufzeit
+  beliebig umdefiniert werden können - dieses Feature wird für die Inline-
+  Grafiken in den Texten benutzt.
+
+Hier im docs-Verzeichnis sind Screenshots vorhanden, auf denen all diese
+Zeichensätze bewundert werden können.
+
+
+ 5.2 Wie man zwischen den Schriftarten wechselt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Nach dem Start benutzt der Konverter die normale Schrift. Mit geschweiften
+Klammern kann man jederzeit die Schrift ändern, dabei bestimmt das erste
+Zeichen in den Klammern, welche Schrift nun benutzt wird. Hinter der
+schließenden Klammer wird wieder die vorige Schrift benutzt. Diese
+Klammerungen können beliebig tief geschachtelt werden, aber natürlich muss
+jede geöffnete Klammer auch wieder geschlossen werden.
+Wenn man zum Beispiel
+
+"In diesem Satz wird das Wort {bBeispiel} fett geschrieben"
+
+schreibt, sorgt das "b" (für "bold") dafür, dass das Wort "Beispiel" in
+Fettschrift angezeigt wird.
+Hier eine Liste der Kennbuchstaben, der damit gewählten Schriftarten und
+Eselsbrücken zum Merken:
+
+ Beispiel   Ergebnis                                          Eselsbrücke
+ {sText}    "Text" in Standardschrift                         s wie Standard
+ {bText}    "Text" in Fettschrift                             b wie Bold
+ {dText}    "TEXT" in doppelt hohen Großbuchstaben            d wie Double
+ {DText}    "TEXT" in doppelt hohen Schnörkelgroßbuchstaben   D wie Double
+ {CText}    Großbuchstaben werden zu Kapitälchenschrift 1     C wie Caps
+ {cText}    Großbuchstaben werden zu Kapitälchenschrift 2     c wie Caps
+ {IText}    Großbuchstaben werden obere Hälfte der 2x2-Icons  I wie Icons
+ {iText}    Großbuchstaben werden untere Hälfte der 2x2-Icons i wie Icons
+Da bei den Stilen d und D doppelt hohe Schriften verwendet werden, werden
+also immer zwei Zeilen im Output generiert, die zusammen den gewünschten
+Text ergeben.
+Man kann diese beiden Hälften auch einzeln generieren (wozu auch immer):
+ {uText}    wie {dText}, aber nur die obere Hälfte            u wie Upper
+ {lText}    wie {dText}, aber nur die untere Hälfte           l wie Lower
+ {UText}    wie {DText}, aber nur die obere Hälfte            U wie Upper
+ {LText}    wie {DText}, aber nur die untere Hälfte           L wie Lower
+
+Für eine grafische Übersicht siehe "beispiel-stile.png" hier in diesem
+Verzeichnis.
+
+Besonderheiten:
+
+'ö' und 'ü' sehen in Fettschrift etwas seltsam aus. Das liegt daran, dass es
+sie im fetten Zeichensatz gar nicht gibt. Stattdessen werden dann Ö und Ü
+genommen, die sehen eh fast genauso aus.
+
+Bei der doppelt hohen Schrift existieren keine Kleinbuchstaben, sondern zwei
+unterschiedliche Sätze von Großbuchstaben ("verschnörkelt" und "normal").
+Deshalb behandelt der Konverter bei Verwendung dieser Schriften
+Kleinbuchstaben in der Eingabedatei genauso wie Großbuchstaben, d.h. bei
+Verwendung der doppelt hohen Schriften wird aus "Beispiel" immer "BEISPIEL",
+und aus "beispieL" und "bEiSpIeL" wird ebenfalls "BEISPIEL".
+

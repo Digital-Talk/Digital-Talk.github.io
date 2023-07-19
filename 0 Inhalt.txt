@@ -1,0 +1,54 @@
+
+ Kapitel 0: Das Inhaltsverzeichnis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Was steht in den einzelnen Dateien?
+
+
+0 Inhalt.txt
+	...ist *diese* Datei...
+
+1 Allgemein
+	Grundsätzlicher Überblick:
+	- Worum geht es überhaupt?
+	- Was das Programm kann
+	- Wie das Programm benutzt wird
+	- externe Abhängigkeiten
+	- Warum das Programm nicht in den Build-Prozess integriert ist
+
+2 Eingabe.txt
+	Hier wird das Format der Eingabedatei erklärt.
+
+3 Formatierung.txt
+	Wie man den Text formatiert, wie das Wordwrap funktioniert und
+	welche speziellen Modi der Konverter kennt.
+
+4 Zeichen.txt
+	Wie man Sonderzeichen und spezielle Steuerzeichen erzeugt.
+
+5 Schriftart.txt
+	Welche DT-Schriftarten es gibt und wie man sie mit geschweiften
+	Klammern auswählt.
+
+6 Makros.txt
+	Was man mit eckigen Klammern machen kann:
+	- Makros nutzen
+	- Textblöcke auskommentieren
+	- winzige Grafiken als Zeichen in den Text setzen
+
+7 Silbentrennung.txt
+	- manuelle Trennvorschläge im Wort
+	- das Trennvorschlags-Wörterbuch
+	- automatische Silbentrennung durch externe Abhängigkeit
+
+8 Grafik.txt
+	- "big pictures"
+	- inline-Grafiken
+	- "tiny"-Grafiken
+	- QR-Codes
+
+9 Referenz.txt
+	- alle Sonderzeichen
+	- alle Schriftstile
+	- alle Zeilenbefehle
+

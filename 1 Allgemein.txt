@@ -1,0 +1,165 @@
+
+ Kapitel 1: Allgemeines zum Programm
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Diese Datei bietet einen groben Überblick über den Textkonverter:
+	1.1 Worum geht es hier überhaupt?
+	1.2 Was das Programm kann
+	1.3 Wie das Programm benutzt wird
+	1.4 externe Abhängigkeiten
+	1.5 Warum das Programm nicht in den Build-Prozess integriert ist
+
+
+ 1.1 Worum geht es hier überhaupt?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dies ist die Dokumentation für das Python-Programm "txt_to_prg". Das
+Programm dient dazu, normale Textdateien in solche Dateien zu konvertieren,
+die das Magazinsystem der Digital Talk als Texte anzeigen kann. Kurz gesagt:
+hier wird erklärt, wie man aus einer selbst geschriebenen oder von einem
+Leser eingesandten Textdatei eine Datei macht, die in das Magsys eingebunden
+werden kann.
+
+
+ 1.2 Was das Programm kann
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Das Programm (im folgenden auch als "der Konverter" bezeichnet) passt nicht
+nur die Zeichenkodierung an den C64 an, sondern kann auch alle Features des
+DT-Magazinsystems nutzen, d.h. verschiedene Schriftarten verwenden, kleine
+Hires-Grafiken mitten im Text plazieren oder "big pictures" als eigene
+Seiten einfügen.
+
+Weiterhin unterstützt der Konverter die bei Textverarbeitungen üblichen
+Standardfunktionen wie:
+	Wordwrap
+	Text linksbündig/rechtsbündig/zentriert anordnen
+	Einrückungen durch Seitenränder
+	forcierte Seitenumbrüche
+	"non-breaking spaces"
+	"soft hyphens", d.h. Trennvorschläge in Worten
+
+Wenn man das Programmpaket LibreOffice mit den deutschen Silbentrennungs-
+Dateien installiert hat, kann der Konverter sogar darauf zugreifen und an
+den Zeilenenden vollautomatisch korrekt trennen.
+
+Außerdem können URLs zu QR-Codes gewandelt und als Grafiken in den Text
+integriert werden.
+
+
+ 1.3 Wie das Programm benutzt wird
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Der Konverter ist kein WYSIWYG-Programm, sondern wird, ähnlich wie ein
+Compiler, per Kommandozeile aufgerufen: Das Programm liest eine
+(Text-)Eingabedatei und schreibt, wenn keine Fehler aufgetreten sind, eine
+(PRG-)Ausgabedatei. Der Aufruf lautet:
+
+	txt_to_prg.py [SCHALTER] EINGABEDATEI.TXT [AUSGABEDATEI.PRG]
+
+Es gibt drei optionale Schalter:
+
+	--pyphen
+		aktiviert die automatische Silbentrennung, siehe Kapitel 7.
+	--oldformat
+		erzeugt Seiten mit 40x16 Zeichen statt 40x25 Zeichen.
+	--ansi
+		benutzt ANSI-Codes für die Vorschau auf der Konsole.
+
+Hat der Benutzer gar keine Ausgabedatei angegeben, wird das Resultat auf der
+Konsole ausgegeben, so kann der Benutzer schnell und einfach das Ergebnis
+überprüfen. Grafiken sind in diesem Fall natürlich nicht sichtbar,
+stattdessen werden dann Platzhalterbuchstaben dargestellt.
+
+Wer schon einmal das bekannte Textsatzsystem LaTeX benutzt hat, wird hier
+keine Schwierigkeiten haben. Die Befehle des Konverters sind zwar komplett
+anders und die Leistungsfähigkeit etliche Größenordnungen geringer, aber
+das grundlegende Prinzip ist sehr ähnlich: Es gibt ein paar Sonderzeichen,
+die eine spezielle Bedeutung haben, und mit diesen Zeichen werden die
+Layout-Befehle eingeleitet.
+
+Um einen Text zu layouten, ist eine mögliche Arbeitsmethode, dass man in
+einem Texteditor-Fenster den Text editiert, diesen regelmäßig speichert und
+dann in einem anderen (Konsolen-)Fenster den Konverter aufruft, um das
+Ergebnis zu betrachten. Wer einen entsprechend skriptbaren Editor oder eine
+integrierte Entwicklungsumgebung benutzt, kann den Konverter natürlich auch
+gleich per Hotkey aufrufen.
+
+Linuxer können das bin-Verzeichnis dem Suchpfad hinzufügen und dann das
+Pythonprogramm txt_to_prg.py direkt aufrufen. Da das unter Windows nicht
+funktioniert, wurden für Windowsnutzer zwei Batchfiles hinzugefügt, die als
+Wrapper dienen, nämlich txt_to_prg.bat und txt_to_prg_s.bat:
+
+	txt_to_prg              ruft den Konverter ohne Silbentrennung auf
+	txt_to_prg_s            ruft den Konverter mit Silbentrennung auf
+
+Wenn man also mit dtshell.bat eine Konsole geöffnet hat, kann man dort per
+
+	cd data
+	cd 112
+	cd chapter-txt
+
+in das Verzeichnis mit den Textdateien wechseln und dann per
+
+	txt_to_prg_s 01impressum.txt
+
+die Textdatei konvertieren (bzw. gleichzeitig im Editor editieren, bis das
+Ergebnis passt). Sobald die Datei "fertig" ist, kann man per
+
+	txt_to_prg_s 01impressum.txt ../chapter/01.prg
+
+die Datei in das Verzeichnis mit den PRG-Dateien speichern. Wenn man nicht
+immer "../chapter" tippen will, kann man als Ausgabedatei auch "auto"
+angeben, dann wird der Name der Ausgabedatei automatisch erzeugt. Das klappt
+aber nur, wenn man sich im richtigen Verzeichnis befindet und der Name der
+Eingabedatei mit zwei Ziffern anfängt.
+
+...und am Ende das Einchecken der PRG-Datei nicht vergessen!
+
+
+ 1.4 externe Abhängigkeiten
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Eine Standard-Python-Installation reicht aus, um die Grundfunktionalität des
+Konverters zu benutzen. Einige Features benötigen aber zusätzliche
+Pythonmodule, die ggfs. nachinstalliert werden müssen. Im einzelnen sind
+das:
+
+Um Grafiken verarbeiten zu können, wird das Pythonmodul "PIL" (bzw.
+"pillow") gebraucht. Zum Testen bitte einfach das Programm bzw. die Library
+"rework/bin/imgutil.py" starten, da sieht man dann, ob das Modul auf dem
+System gefunden wurde und wie man es ggfs. nachinstalliert.
+
+Um QR-Codes zu generieren, wird das Modul "qrcode" gebraucht. Zum Testen
+bitte einfach das Programm bzw. die Library "rework/bin/qrcodeutil.py"
+starten, da sieht man dann, ob das Modul auf dem System gefunden wurde und
+wie man es ggfs. nachinstalliert.
+
+Für die automatische Silbentrennung wird einerseits das Modul "pyphen"
+gebraucht, und außerdem müssen auf dem System die deutschen
+Silbentrenn-Daten vorhanden sein, auf die dieses Modul zugreift. Der
+einfachste Weg, diese Daten zu erhalten, ist eine Installation von
+LibreOffice...
+Zum Testen bitte einfach das Programm bzw. die Library
+"rework/bin/silbentrennung.py" starten, da sieht man dann, ob das Modul und
+die Silbentrennungs-Daten auf dem System gefunden wurden und wie man das
+Modul ggfs. nachinstalliert.
+
+
+ 1.5 Warum das Programm nicht in den Build-Prozess integriert ist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Das automatische Buildsystem, das die DT-Diskimages erzeugt, komprimiert die
+eingecheckten PRG-Dateien und kopiert sie in die Disk-Images, wobei die
+Verteilung auf die einzelnen Images von der Datei "menu.asm" abhängt. An
+dieser Stelle drängt sich die Frage auf, warum das Buildsystem nicht auch
+gleich den Konverter aufruft, um die PRG-Dateien automatisch aus den
+Textdateien zu erzeugen.
+Der Grund ist einfach der, dass das Buildsystem überall die gleichen Dateien
+erzeugen soll. Aufgrund der Abhängigkeit von den Silbentrennungs-Dateien kann
+man das für den Konverter aber nicht garantieren:
+Auf einem System ohne LibreOffice würden die Texte anders umgebrochen als
+auf einem System mit LibreOffice. Also entweder müsste man grundsätzlich auf
+die automatische Silbentrennung verzichten (was schade wäre) oder man muss
+die Konvertierung von TXT zu PRG manuell machen (so wie es jetzt ist).
+

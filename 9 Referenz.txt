@@ -1,0 +1,237 @@
+
+ Kapitel 9: Referenz zum Nachschlagen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Wenn man weiß, *dass* etwas geht, aber nicht mehr weiß, *wie* es geht, kann
+man hier nachschlagen:
+	9.1 alle Backslash-Zeichenkombinationen
+	9.2 alle Tilde-Zeichenkombinationen
+	9.3 alle Schriftstile
+	9.4 alle Zeilenbefehle
+
+
+ 9.1 Backslash-Kombinationen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Der Backslash wird in Kombination mit dem Folgezeichen für bestimmte
+Steuercodes verwendet:
+ Kombi  erzeugt:
+ \\     forciert einen Zeilenumbruch bzw. Absatz
+ \      "non-breaking space": bei Space hinter Backslash wird nicht umgebrochen
+ \-     "soft hyphen": Trennvorschlag innerhalb von Wörtern, siehe Kapitel 7.1
+ \n     Zeilentrenner in Makro-Definitionen, nirgendwo sonst, siehe Kapitel 6.1
+...für mehr Details siehe Kapitel 4.1.
+
+
+ 9.2 Tilde-Kombinationen
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Mit der Tilde können einige Sonderzeichen erzeugt werden.
+
+Falls Dein System nicht die nötigen Zeichensätze installiert hat und Du
+deshalb statt der Unicode-Zeichen hier nur Platzhalter siehst, kannst Du das
+Ergebnis auch rechts in der Grafik "beispiel-stile.png" besichtigen.
+
+Kombi  Zeichen  Erklärung/Eselsbrücke
+ ~b      ╌      b wie unterBrochener horizontaler Strich
+ ~c      ┼      c wie Cross
+ ~d      …      d wie Dots
+ ~e      €      e wie Euro
+ ~f      ♀      f wie Female
+ ~h      –      h wie Horizontaler Strich
+ ~l      ←      l wie Linkspfeil
+ ~o      ¯      o wie Overscore
+ ~p      ·      p wie (bullet) Point
+ ~r      →      r wie Rechtspfeil
+ ~s      ¤      s wie (hovering) Square
+ ~u      _      u wie Underscore
+ ~v      |      v wie Vertikaler Strich (aka Pipe)
+ ~#      #      diese Umschreibung ist nur in der ersten Spalte nötig, weil
+                '#' dort sonst die Zeile als Kommentar markieren würde.
+...siehe auch Kapitel 4.2.
+
+
+ 9.3 Schriftarten
+~~~~~~~~~~~~~~~~~~
+
+Das erste Zeichen in geschweiften Klammern bestimmt die Schriftart:
+ Beispiel   Ergebnis                                          Eselsbrücke
+ {sText}    "Text" in Standardschrift                         s wie Standard
+ {bText}    "Text" in Fettschrift                             b wie Bold
+ {dText}    "TEXT" in doppelt hohen Großbuchstaben            d wie Double
+ {DText}    "TEXT" in doppelt hohen Schnörkelgroßbuchstaben   D wie Double
+ {CText}    Großbuchstaben werden zu Kapitälchenschrift 1     C wie Caps
+ {cText}    Großbuchstaben werden zu Kapitälchenschrift 2     c wie Caps
+ {IText}    Großbuchstaben werden obere Hälfte der 2x2-Icons  I wie Icons
+ {iText}    Großbuchstaben werden untere Hälfte der 2x2-Icons i wie Icons
+Da bei den Stilen d und D doppelt hohe Schriften verwendet werden, werden
+also immer zwei Zeilen im Output generiert, die zusammen den gewünschten
+Text ergeben.
+Man kann diese beiden Hälften auch einzeln generieren (wozu auch immer):
+ {uText}    wie {dText}, aber nur die obere Hälfte            u wie Upper
+ {lText}    wie {dText}, aber nur die untere Hälfte           l wie Lower
+ {UText}    wie {DText}, aber nur die obere Hälfte            U wie Upper
+ {LText}    wie {DText}, aber nur die untere Hälfte           L wie Lower
+
+Für eine grafische Übersicht siehe "beispiel-stile.png" hier in diesem
+Verzeichnis.
+
+
+ 9.4 Zeilenbefehle
+~~~~~~~~~~~~~~~~~~~
+
+Zeilenbefehle werden durch das ^-Zeichen in der ersten Spalte eingeleitet.
+
+
+Zeilenbefehle für Textformatierung:
+
+Es gibt fünf Modi für die Textformatierung und von jedem der fünf Befehle
+noch eine Kurzversion. Die Zahlen LINKS und RECHTS sind optional, damit kann
+man die Breite der Seitenränder festlegen (Default ist Null).
+
+^left LINKS,RECHTS
+^l LINKS,RECHTS
+	linksbündig mit Wordwrap (Default)
+^right LINKS,RECHTS
+^r LINKS,RECHTS
+	rechtsbündig mit Wordwrap
+^center LINKS,RECHTS
+^c LINKS,RECHTS
+	zentriert mit Wordwrap
+^pre LINKS,RECHTS
+^p LINKS,RECHTS
+	"pre-formatted", der Text wird nicht geändert,
+	nützlich für Assemblerschnipsel oder Gedichte oder so.
+	Man muss natürlich die maximale Zeilenlänge beachten.
+^leftright LINKS,RECHTS
+^lr LINKS,RECHTS
+	zweispaltige Darstellung, links linksbündig, rechts rechtsbündig.
+	In jeder Zeile ist in der Mitte ein '^' als Trennzeichen nötig, an
+	dieser Stelle wird mit dem letzten Zeichen vor dem '^' aufgefüllt.
+	Auch hier muss man die maximale Zeilenlänge beachten.
+
+
+Zeilenbefehle für vertikale Formatierung:
+
+^headfoot OBEN, UNTEN
+	legt die Größen von oberem und unterem Seitenrand fest, die
+	angegebene Anzahl von Zeilen wird also auf jeder Seite frei
+	gelassen. Das bezieht sich nur auf den Text, nicht auf Grafik!
+	Die Werte "4, 5" entsprechen dem "alten" Seitenformat vor der
+	DT-Ausgabe #113.
+
+^line ZEILE
+	fügt Leerzeilen ein, bis man die angegebene Zeile erreicht hat,
+	ggfs. auf der nächsten Seite. Negative Zahlen zählen von unten. Die
+	Zahlen beziehen sich nicht auf den Bildschirm, sondern auf den
+	Bereich, der übrig bleibt, wenn man sich den oberen und unteren
+	Seitenrand weg denkt.
+	Beispiele:
+		^line 0              gleichbedeutung mit einem Seitenumbruch
+		^line -1             geht zur untersten Zeile
+
+^minfree ZEILEN
+	sorgt für einen Seitenumbruch, falls auf der aktuellen Seite weniger
+	als ZEILEN Zeilen frei sind. So kann man sicherstellen, dass ein
+	neuer Absatz nicht in der letzten oder vorletzten Zeile einer Seite
+	beginnt (Verhindern von "Schusterjungen"). Außerdem kann man so
+	dafür sorgen, dass die doppelt hohe Schrift oder die 2x2-Icons nicht
+	in der letzten Zeile einer Seite benutzt werden.
+
+
+Zeilenbefehl für Makros:
+
+^set NAME=DEFINITION
+	definiert ein Makro. Wenn man später [NAME] schreibt (also den Namen
+	in eckigen Klammern), wird dieser Ausdruck durch DEFINITION ersetzt.
+	DEFINITION kann auch mehrere Zeilen erzeugen, diese müssen bei der
+	(einzeiligen!) Definition durch "\n" getrennt werden. So kann die
+	Definition auch mehrere Zeilenbefehle enthalten.
+	Beispiel:
+		^set signature=\n^right\nEuer Dr_Blutig\\
+	Den größten Nutzen bringt dieser Befehl, wenn man sich damit eigene
+	"Formatvorlagen" definiert, zum Beispiel Makros namens [a] und [k],
+	mit denen man dann Absätze und Kapitel einleitet. Mit einer kleinen
+	Änderung der Makro-Definition kann man dann das ganze Dokument
+	umformatieren.
+
+
+Zeilenbefehle für seitenfüllende Grafiken (bis 320x200 Pixel):
+
+^titlepic FILENAME.png
+^bigpicture FILENAME.png
+	zeigt das angegebene Bild als "big picture" vor dem Text an. Es gibt
+	keinen Unterschied zwischen den beiden Befehlen, "^titlepic" ist
+	einfach nur der neue Name, da mir "^bigpicture" nicht eindeutig
+	genug erschien.
+^clearpic FILENAME.png
+	zeigt *nach* dem "title pic", statt den Bildschirm zu löschen, das
+	angegebene Bild an. Achtung, dieses Feature ist inzwischen
+	hinfällig, da es mit dem neuen Seitenformat nicht mehr funktioniert:
+	Früher blieben oben vier und unten fünf Zeilen permanent sichtbar,
+	da in diesen Bereichen kein Text angezeigt wurde. Um das Feature
+	heute sinnvoll einzusetzen, muss man über die Kommandozeilenoption
+	"--oldformat" das alte Ausgabeformat erzwingen.
+	Siehe "beispiel-clearpic.png" hier in diesem Verzeichnis für eine
+	Vorlage.
+^pagepic FILENAME.png
+	fügt das angegebene Bild als eigene Seite in den Text ein.
+
+
+Zeilenbefehl für inline-Grafik (bis 320x200 Pixel):
+
+^image FILENAME.png,KOMMASEPARIERTE,ZUWEISUNGEN,AN,OPTIONALE,PARAMETER
+	plaziert das angegebene Bild an der angegebenen Stelle, der weitere
+	Text fließt dann darum herum. Alle Parameter hinter dem Dateinamen
+	sind optional und können in beliebiger Reihenfolge angegeben werden.
+	Die erlaubten Parameter sind:
+	x=XPOS,y=YPOS                                 Position auf der Seite
+	above=OBEN,below=UNTEN,left=LINKS,right=RECHTS      Rand um das Bild
+	keepleft=LINKS,keepright=RECHTS                       beliebige Form
+	Beispiel:
+		^image albern.png,x=-1,below=2,keepleft=1
+	Für weitere Details siehe Kapitel 8.2.
+
+
+Zeilenbefehle für QR-Codes:
+
+^qr IRGEND_EIN_TEXTSTRING
+	konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen
+	als inline-Grafik rechts unten auf der nächstmöglichen Seite. Kleine
+	Codes werden mit 4x4 Pixeln pro Bit gerendert, um Platz im Charset
+	zu sparen. Codes, die zu groß für eine Seite wären, werden mit 2x2
+	Pixeln pro Bit gerendert, dies braucht aber deutlich mehr Platz im
+	Charset.
+	Beispiel:
+		^line 0
+		^qr https://digital-talk.github.io/
+		Scannt den QR-Code, um auf die DT-Seite zu gelangen!
+^qr2 IRGEND_EIN_TEXTSTRING
+	konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen
+	als inline-Grafik rechts unten auf der nächstmöglichen Seite. Die
+	Bits des Codes werden mit 2x2 Pixeln gerendert, d.h. der Code nimmt
+	nicht viel Platz auf dem Bildschirm weg, aber dafür umso mehr Platz
+	im Charset.
+^qr4 IRGEND_EIN_TEXTSTRING
+	konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen
+	als inline-Grafik rechts unten auf der nächstmöglichen Seite, oder
+	(falls zu groß) mittig auf einer eigenen Grafikseite. Die Bits des
+	Codes werden mit 4x4 Pixeln gerendert, d.h. die Codes sehen
+	riesengroß aus, brauchen aber nur wenig Platz im Charset.
+	Dieser Befehl bietet sich an, wenn ein Text sehr viele QR-Codes
+	enthält.
+
+
+Zeilenbefehl für Silbentrennungs-Wörterbuch:
+
+^-SIL-BEN-GE-TRENNT
+	Der Befehl übernimmt den Rest hinter dem ersten Minus ins
+	Silbentrennungs-Wörterbuch.
+	Beispiele:
+		^-Scho-ko-la-de
+		^-Trenn-vor-schlag
+		^-Sil-ben-tren-nung
+		^-Bei-spiel
+		^-Neozoon       das wird jetzt überhaupt nicht mehr getrennt
+	Für weitere Details siehe Kapitel 7.2.
+

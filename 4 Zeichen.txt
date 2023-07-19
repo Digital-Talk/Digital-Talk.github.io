@@ -1,0 +1,97 @@
+
+ Kapitel 4: Sonderzeichen und Steuerzeichen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hier wird erklärt, wie man Sonderzeichen und spezielle Steuerzeichen
+erzeugt. Man kann diese Zeichen grob in drei Kategorien einteilen:
+	4.1 Steuerzeichen mit Backslash
+	4.2 Sonderzeichen mit Tilde
+	4.3 eigene Zeichen mit [tiny:*.png]
+
+
+ 4.1 Steuerzeichen mit Backslash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Der Backslash wird in Kombination mit dem Folgezeichen verwendet, um
+bestimmte Steuercodes zu erzeugen:
+
+"\\"
+Ein doppelter Backslash forciert einen Zeilenumbruch bzw. Absatz, aber immer
+nur einmal: Wenn der gedachte Cursor bereits ganz links steht, hat dieser
+Steuercode keinen Effekt.
+
+"\ "
+Ein Backslash mit einem Space dahinter erzeugt ein "non-breaking space",
+d.h. ein geschütztes Leerzeichen: Bei diesem Leerzeichen wird nicht
+umgebrochen. Das ist nützlich, damit die Komponenten von "300 000 km/s" o.ä.
+nicht auseinandergerissen werden: man schreibt also stattdessen
+300\ 000\ km/s
+und in der Ausgabe steht dann "300 000 km/s" auf jeden Fall in einer
+einzigen Zeile.
+Man kann so ein "non-breaking space"-Zeichen auch direkt im Eingabe-Textfile
+unterbringen, wenn man denn weiß, welche Tastenkombination des verwendeten
+Betriebssystems das Zeichen erzeugt (z.B. Shift-Alt-Space), die Umschreibung
+mit dem Backslash ist nur eine zusätzliche Möglichkeit.
+
+"\-"
+Ein Backslash mit einem Minus dahinter erzeugt ein "soft hyphen", d.h. einen
+Trennvorschlag in einem Wort. Der Wordwrap-Algorithmus wird bei Bedarf an
+dieser Stelle einen Bindestrich einfügen und das Wort umbrechen.
+Man kann so ein "soft hyphen" auch direkt im Eingabe-Textfile unterbringen,
+wenn man denn weiß, welche Tastenkombination des verwendeten Betriebssystems
+das Zeichen erzeugt (z.B. Alt-Minus), die Umschreibung mit dem Backslash ist
+nur eine zusätzliche Möglichkeit.
+
+"\n"
+Ein Backslash mit einem 'n' dahinter fungiert als Zeilentrenner in
+Makro-Definitionen, aber wirklich nur dort und nirgendwo sonst. Für Details
+siehe Kapitel 6.1.
+
+
+ 4.2 Sonderzeichen mit Tilde
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Die Tilde wird verwendet, um Sonderzeichen zu erzeugen, die zwar in den DT-
+Zeichensätzen vorhanden sind, die man aber evtl. nicht auf der PC-Tastatur
+findet. Wer die Unicode-Zeichen erzeugen kann, kann sie aber auch direkt in
+den Text schreiben, die Umschreibung mit der Tilde ist nur eine zusätzliche
+Möglichkeit.
+Hier die Tilde-Kombinationen, die erzeugten Zeichen und Eselsbrücken zum
+Merken:
+
+Kombi  Zeichen  Erklärung/Eselsbrücke
+ ~b      ╌      b wie unterBrochener horizontaler Strich
+ ~c      ┼      c wie Cross
+ ~d      …      d wie Dots (eigentlich "Ellipsis", aber e war schon besetzt)
+ ~e      €      e wie Euro
+ ~f      ♀      f wie Female
+ ~h      –      h wie Horizontaler Strich
+ ~l      ←      l wie Linkspfeil
+ ~o      ¯      o wie Overscore
+ ~p      ·      p wie Point (eigentlich "Bullet", aber b war schon besetzt)
+ ~r      →      r wie Rechtspfeil
+ ~s      ¤      s wie (hovering) Square
+ ~u      _      u wie Underscore
+ ~v      |      v wie Vertikaler Strich (aka Pipe)
+ ~#      #      diese Umschreibung ist nur in der ersten Spalte nötig, weil
+                '#' dort sonst die Zeile als Kommentar markieren würde.
+
+Falls Dein System nicht die nötigen Zeichensätze installiert hat und Du
+deshalb statt der Unicode-Zeichen hier nur Platzhalter siehst, kannst Du das
+Ergebnis auch rechts in der Grafik "beispiel-stile.png" besichtigen.
+
+
+ 4.3 eigene Zeichen mit [tiny:*.png]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Wenn das Pythonmodul für Grafik-Unterstützung installiert ist, kann man auch
+eigene Zeichen (wie 'é') in den Text einfügen. Das Zeichen muss als 8x8
+Pixel große PNG-Grafik mit zwei Farben vorliegen, dabei wird die dunklere
+Farbe als Schriftfarbe und die hellere Farbe als Hintergrundfarbe
+interpretiert. Um das Zeichen einzufügen, schreibt man im Text einfach
+[tiny:FILENAME.PNG], also den Dateinamen mit "tiny:" davor in eckigen
+Klammern.
+
+Für weitere Informationen über diesen Mechanismus siehe die Kapitel 6.3 und
+8.3.
+

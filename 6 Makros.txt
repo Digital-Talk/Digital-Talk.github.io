@@ -1,0 +1,133 @@
+
+ Kapitel 6: Makros und was mit eckigen Klammern noch so geht
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Da die vorhandenen DT-Zeichensätze keine eckigen Klammern enthalten, werden
+auch diese Zeichen benutzt, um spezielle Funktionen des Konverters
+aufzurufen. Genau wie die geschweiften Klammern müssen auch die eckigen
+Klammern immer paarweise benutzt werden, der Inhalt der Klammern wird aber
+völlig anders interpretiert. Derzeit kann man mit eckigen Klammern drei
+verschiedene Dinge tun:
+	6.1 Makros nutzen
+	6.2 Textblöcke auskommentieren
+	6.3 winzige Grafiken direkt in den Text setzen
+
+
+ 6.1 Makros nutzen
+~~~~~~~~~~~~~~~~~~~
+
+Makros sind selbstdefinierte Kürzel. Man weist sie ein einziges Mal zu und
+kann sie danach beliebig oft aufrufen, d.h. ihre Definitionen in den Text
+einsetzen.
+Für die Zuweisung gibt es den Zeilenbefehl "set":
+
+^set NAME=DEFINITION
+
+Der Name darf beliebig lang sein und muss aus alphanumerischen Zeichen
+bestehen. Die Definition darf alles enthalten, was auch sonst im Text
+erlaubt ist, also auch Sonderzeichen, Steuerzeichen sowie Änderungen von
+Layout und Schriftart. Es gibt nur eine Besonderheit: Die Definition umfasst
+nur eine Zeile, oft soll das Makro aber mehrere Zeilen enthalten. Deshalb
+kann man in der Definition die Zeichenkombination "\n" als Zeilentrenner
+benutzen.
+
+Aufgerufen werden Makros einfach durch ihren Namen in eckigen Klammern:
+
+Dies ist ein Beispielsatz und hier [NAME] wird jetzt das zuvor definierte
+Makro aufgerufen, also die Definition eingefügt.
+
+Was kann man damit nun anfangen?
+Nehmen wir als Beispiel an, der aktuelle Text sei ein Interview: Fred stellt
+Fragen und Anton antwortet darauf.
+Und damit man Fragen und Antworten im fertigen Text besser unterscheiden
+kann, werden die Fragen ein paar Zeichen eingerückt und die Antworten nicht.
+Das sähe dann z.B. so aus:
+
+^l 2,0
+Fred: Hallo Anton!
+^l
+Anton: Hallo Fred!
+^l 2,0
+Fred: Wann kommt Dein neues Werk heraus?
+^l
+Anton: Bald!
+^l 2,0
+Fred: Warum noch nicht jetzt?
+^l
+Anton: Ist noch nicht fertig.
+^l 2,0
+Fred: Was fehlt denn noch?
+^l
+Anton: So Zeug halt.
+
+Wenn man sich jetzt entscheidet, dass das Ergebnis blöd aussieht und man die
+Fragen lieber rechtsbündig darstellen will, muss man vor jeder Frage den
+Layoutbefehl anpassen. Es ist bedeutend einfacher, wenn man von vorn herein
+für Fragen und Antworten zwei separate Makros definiert, denn dann muss man
+nur das eine Makro anpassen. Hier das gleiche Beispiel mit Makros:
+
+# wir definieren uns Makros namens "f" und "a" für Fragen und Antworten:
+^set f=^left 2,0\nFred:
+^set a=^left\nAnton:
+# und jetzt benutzen wir diese Makros:
+[f] Hallo Anton!
+[a] Hallo Fred!
+[f] Wann kommt Dein neues Werk heraus?
+[a] Bald!
+[f] Warum noch nicht jetzt?
+[a] Ist noch nicht fertig.
+[f] Was fehlt denn noch?
+[a] So Zeug halt.
+
+Jetzt kann man mit kleinen Änderungen an den Makros das ganze Interview
+umformatieren. Ändert man z.B. das Fragen-Makro zu
+
+^set f=^minfree 2\n^right\n{bFred}:
+
+so werden danach alle Fragen rechtsbündig dargestellt, und der Name "Fred"
+vor jeder Frage wird fett gedruckt. Außerdem sorgt das "^minfree 2" dafür,
+dass "Fred:" nicht allein in der letzten Zeile der Seite steht.
+Bei längeren Texten kann man also durch den vorausschauenden Einsatz von
+Makros eine Menge Zeit und Arbeit einsparen.
+
+
+ 6.2 Textblöcke auskommentieren
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Eine weitere Funktion der eckigen Klammern ist, dass man damit schnell und
+einfach größere Textblöcke auskommentieren kann. Dafür muss man einfach ein
+'#'-Zeichen als erstes Zeichen hinter der öffnenden Klammer schreiben. Alles
+bis zur passenden schließenden Klammer wird dann ignoriert - das gilt nicht
+nur für den Text, sondern auch für evtl. vorhandene ^-Befehle in den Zeilen
+dazwischen. Beispiel:
+
+bliblablub hier steht irgend ein Text, und der landet natürlich auch in der
+Ausgabedatei. [# Aber ab hier nicht mehr,
+^center
+der Teil in den Klammern wird ignoriert, auch der Zentrierbefehl.] Dieser
+Satz landet dann wieder in der Ausgabedatei.
+
+----------------
+ACHTUNG, diese Funktion hat derzeit einen Bug: ^-Befehle werden auch dann
+ausgeführt, wenn sie in Kommentarblöcken stehen.
+----------------
+
+
+ 6.3 winzige Grafiken direkt in den Text setzen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Wenn das Pythonmodul für Grafik-Unterstützung installiert ist, kann man auch
+winzige Grafiken direkt in den Text einfügen. Die Grafik muss als maximal 8
+Pixel hohe PNG-Grafik mit zwei Farben vorliegen, dabei wird die dunklere
+Farbe als Vordergrundfarbe und die hellere Farbe als Hintergrundfarbe
+interpretiert. Um die Grafik einzufügen, schreibt man
+
+[tiny:DATEINAME.PNG]
+
+an der Stelle in den Text, wo die Grafik erscheinen soll. Aufgrund der
+geringen Höhe eignet sich das offensichtlich nur für Ornamente oder eigene
+Sonderzeichen (daher ja auch das Präfix "tiny").
+
+Für weitere Informationen über diesen Mechanismus siehe die Kapitel 4.3 und
+8.3, für größere Grafiken siehe den Rest von Kapitel 8.
+

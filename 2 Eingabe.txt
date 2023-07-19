@@ -1,0 +1,89 @@
+
+ Kapitel 2: Das Format der Eingabedatei
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hier wird erklärt, welchen Regeln die Eingabedatei gehorchen muss:
+	2.1 Kodierung
+	2.2 Zeichen
+	2.3 Zeilen
+
+
+ 2.1 Kodierung
+~~~~~~~~~~~~~~~
+
+Die Eingabedatei ist eine normale Textdatei in UTF-8-Kodierung. Als
+Zeilenenden werden CR, LF und CRLF akzeptiert.
+UTF-8 hat den großen Vorteil, dass Kodierungsfehler sofort auffallen, d.h.
+der Konverter wird sich sofort beschweren, wenn man ihm versehentlich eine
+Datei mit Umlauten in ISO-8859/1, CP1252 oder etwas anderem vorsetzt.
+Windowsnutzer können dann gleich das Skript "convert_to_utf8.py" benutzen,
+um ihre CP1252-Datei umzuwandeln. Danach sollte der Konverter die Datei
+akzeptieren.
+
+
+ 2.2 Zeichen
+~~~~~~~~~~~~~
+
+In den Zeichensätzen der DT fehlen einige der üblichen ASCII-Zeichen,
+nämlich diese: [ \ ] ^ ` { } ~
+Daher haben diese Zeichen Sonderbedeutungen für den Konverter bekommen:
+
+'[' und ']'
+Die eckigen Klammern haben drei Funktionen: Man kann damit ganze Textblöcke
+auskommentieren, man kann damit Makros aufrufen, und man kann damit winzige
+Grafiken (d.h. Sonderzeichen) in den Text aufnehmen. Siehe Kapitel 6 für
+Details.
+
+'\'
+Mit dem Backslash können bestimmte Steuercodes eingefügt werden, siehe dazu
+Kapitel 4.1.
+
+'^'
+Steht am Anfang einer Zeile ein '^', so wird der Rest der Zeile als Befehl
+interpretiert, siehe weiter unten in Abschnitt 2.3.
+Steht das Zeichen weiter rechts, so hat es eine völlig andere Bedeutung: es
+dient dann als Spaltentrenner, hauptsächlich im Zwei-Spalten-Modus, siehe
+Kapitel 3.4.
+
+'`'
+Das Zeichen '`' wird derzeit nicht benutzt, da es leicht mit '´' und '''
+verwechselt werden kann.
+
+'{' und '}'
+Geschweifte Klammern innerhalb des Textes ändern die Schriftart, hinter den
+Klammern gilt dann wieder die vorige Einstellung. Siehe Kapitel 5.
+
+'~'
+Mit der Tilde kann man einige Sonderzeichen erzeugen, siehe Kapitel 4.2.
+
+Alle anderen Zeichen werden direkt in den Ausgabetext übernommen, soweit das
+DT-Magsystem diese Zeichen unterstützt oder zumindest passende Äquivalente
+vorhanden sind:
+So werden z.B. doppelte Anführungszeichen wie '“', '”' und '„' alle zu '"'
+konvertiert, und einfache Anführungszeichen werden zum Apostroph '.
+
+
+ 2.3 Zeilen
+~~~~~~~~~~~~
+
+Beginnt eine Zeile mit dem Zeichen '#', so ist sie ein Kommentar und wird
+komplett ignoriert. Damit kann man sich z.B. ein "40-Zeichen-Lineal" machen,
+oder eben Dinge in den Text schreiben, die in der Ausgabe nicht auftauchen
+sollen, also sowas wie:
+"die Termine in diesem Absatz sind bereits veraltet und müssen überarbeitet
+werden!", oder "hatte X nicht versprochen, hier eine neue Grafik
+einzubinden?", oder "nein, die kommt erst im nächsten Teil!".
+Achtung, '#' leitet nur dann Kommentare ein, wenn es ganz links steht - im
+Rest der Zeile ist '#' ein ganz normales Zeichen.
+Wenn man wirklich ein '#' am Anfang einer Zeile braucht, z.B. weil es eben
+in der Ausgabedatei so stehen soll, so schreibt man stattdessen "~#", siehe
+dazu auch Kapitel 4.2.
+
+Beginnt eine Zeile mit dem Zeichen '^', so wird die ganze Zeile als Befehl
+interpretiert. Mit diesen Zeilenbefehlen kann man z.B. die Ausrichtung des
+Texts ändern (siehe Kapitel 3) oder Bilder einfügen (siehe Kapitel 8). Eine
+Liste aller Zeilenbefehle findest Du in Kapitel 9.4.
+
+Alle anderen Zeilen sind normale Textzeilen und ihr Inhalt landet, ggfs.
+umformatiert, im Output.
+

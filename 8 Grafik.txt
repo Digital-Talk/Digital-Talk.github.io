@@ -1,0 +1,339 @@
+
+ Kapitel 8: wie man Grafiken einbindet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Der Konverter kann Grafiken in den Text integrieren, benötigt dafür aber ein
+zusätzliches Pythonmodul. Wie bereits in Kapitel 1.4 angegeben:
+
+Um Grafiken verarbeiten zu können, wird das Pythonmodul "PIL" (bzw.
+"pillow") gebraucht. Zum Testen bitte einfach das Programm bzw. die Library
+"rework/bin/imgutil.py" starten, da sieht man dann, ob das Modul auf dem
+System gefunden wurde und wie man es ggfs. nachinstalliert.
+
+Es gibt vier verschiedene Möglichkeiten zum Einbinden von Grafiken:
+	8.1 "big picture", bis 320x200 Pixel, nimmt eine ganze Seite ein
+	8.2 inline-Grafik, bis 320x200 Pixel, Text fließt drum herum
+	8.3 "tiny", bis 320x8 Pixel, für Sonderzeichen direkt im Text
+	8.4 QR-Codes, die Grafik wird aus einem URL-String erzeugt
+Damit externe Grafikdateien eingebunden werden können, dürfen sie nur eine
+Farbtiefe von einem Bit haben, also maximal zwei Farben aufweisen. Bei der
+Anzeige in der DT wird dann die dunklere Farbe durch die DT-Textfarbe und
+die hellere Farbe durch die DT-Hintergrundfarbe ersetzt.
+Sind die Grafikdateien zu hoch, zu breit oder haben zuviele Farben, wird der
+Konverter entsprechende Fehlermeldungen ausspucken, man muss die Grafiken
+also selbst anpassen und entsprechend vorbereiten.
+Eine weitere mögliche Fehlermeldung betrifft den Speicherplatzverbrauch:
+Grafiken brauchen viel Speicher und irgendwann ist der für die Textdatei
+reservierte Speicherbereich der DT eben voll.
+
+
+ 8.1 big pictures
+~~~~~~~~~~~~~~~~~~
+
+Ein "big picture" darf bis zu 320x200 Pixel groß sein, entspricht also einer
+C64-üblichen HiRes-Bitmap (nimmt man kleinere Grafiken, werden diese vom
+Konverter automatisch auf dem Bildschirm zentriert). Solche Grafiken werden
+vor oder zwischen den eigentlichen Textseiten angezeigt, d.h. der Konverter
+kann in diese Bilder keine Texte "hineinrendern" oder sie anderweitig
+verändern. Für "big pictures" sind diese Befehle definiert:
+
+^titlepic FILENAME.png
+^bigpicture FILENAME.png
+    ...zeigt das Bild als "big picture" _vor_ dem eigentlichen Text an. Es
+    hat dann keine Seitennummer, man kann also später nicht zu dem Bild
+    zurück blättern.
+    Es gibt keinen Unterschied zwischen den beiden Befehlen, "titlepic" ist
+    einfach nur der neue Name, da ich den alten Namen "bigpicture" nicht
+    aussagekräftig genug fand.
+^clearpic FILENAME.png
+    ...zeigt _nach_ dem "title pic", statt den Bildschirm zu löschen, das
+    angegebene Bild an. Davon blieben dann oben vier und unten fünf Zeilen
+    permanent sichtbar, da in diesen Bereichen kein Text angezeigt wurde.
+    Dieses Feature wurde in Ausgabe #25 der DT benutzt und möglicherweise
+    seitdem nie wieder. Inzwischen ist es auch nicht mehr sinnvoll
+    verwendbar, da die Textseiten jetzt den kompletten Bildschirm abdecken
+    und vom clearpic somit nichts mehr permanent übrig bleibt.
+    Eine Vorlage für Eigenkreationen befindet sich in der Datei
+    "beispiel-clearpic.png", dort sind die drei Bereiche deutlich sichtbar
+    abgegrenzt. Um das Feature sinnvoll zu nutzen, muss aber eine Textdatei
+    im "alten Modus", d.h. mit nur 16 Textzeilen pro Seite erzeugt werden,
+    dies geht derzeit nur über die Kommandozeilenoption "--oldformat".
+^pagepic FILENAME.png
+    ...fügt das angegebene Bild als eigene Seite in den Text ein, es bekommt
+    also eine Seitennummer und somit kann man auch später wieder dahin
+    zurück blättern. Wird ein- und dasselbe Bild mehrfach eingefügt, so sind
+    seine Daten nur ein einziges Mal in der Ausgabedatei vorhanden, brauchen
+    also keinen zusätzlichen Speicherplatz.
+
+Unkomprimiert würde jedes "big picture" exakt 8000 Byte belegen. Allerdings
+benutzt das DT-Magsystem einen einfachen Kompressionsalgorithmus, und so
+können Grafiken mitunter deutlich platzsparender gespeichert werden. Das
+funktioniert aber nur, wenn das Bild große einfarbige Flächen enthält. Hier
+als Beispiel die gepackten Größen von den "big pictures" der Ausgabe #111:
+    00.prg: 3590 Bytes (Spaceballs)
+    01.prg: 4412 Bytes (Stan und Ollie)
+    24.prg: 3384 Bytes (Enterprise-Draufsicht)
+    30.prg: 2952 Bytes (finalcc)        <- beste Kompression
+    31.prg: 4442 Bytes (John Madden)
+    32.prg: 7290 Bytes (Briley Witch)   <- schlechteste Kompression
+    52.prg: 3547 Bytes (Rapidfire)
+Wenn man sich die ursprünglichen PNGs (in rework/data/111/chapter-txt)
+ansieht, versteht man auch den Grund: Das "Briley Witch"-Bild enthält kaum
+große Flächen, während das Chesscard-Bild und das Enterprise-Bild eigentlich
+nur große Flächen enthalten.
+
+
+ 8.2 inline-Grafik
+~~~~~~~~~~~~~~~~~~~
+
+Will man auf einer Seite Text und Grafik mischen, nimmt man den Befehl
+"^image". Dieser Befehl plaziert eine Grafik auf einer Textseite, der
+weitere Text fließt dann um die Grafik herum. Auch diese Grafiken können
+maximal 320x200 Pixel groß sein. Der Befehl hat dieses Format:
+
+^image FILENAME,PARAMETER=WERT,PARAMETER=WERT, ...
+
+Alle Parameter hinter dem Dateinamen sind optional und können in beliebiger
+Reihenfolge angegeben werden. Die erlaubten Parameternamen sind: "x", "y",
+"left", "right", "above", "below", "keepleft", "keepright". Hier ein
+Beispiel:
+
+^image gummibaum.png,x=right,y=bottom,below=2,keepleft=1
+
+
+Die einzelnen Parameter bedeuten dabei:
+
+
+Parameter "x" und "y":
+
+Diese beiden Parameter legen die Position der Grafik auf der Seite fest,
+gezählt in Zeichen.
+
+"x" zählt von links, "y" zählt von oben. Negative Zahlen zählen von der
+anderen Seite. Beispiele:
+    x=0     Bild steht ganz links (default)
+    x=20    Bild steht rechts von der "Mittellinie"
+    x=-1    Bild steht ganz rechts
+    y=0     Bild steht ganz oben auf der Seite
+    y=1     Bild beginnt in der zweiten Zeile
+    y=13    Bild beginnt unter der "Mittellinie"
+    y=-2    Bild lässt unten eine Zeile frei
+    y=-1    Bild steht ganz unten
+Für "y" gibt es noch eine weitere Möglichkeit: Ist das erste Zeichen des
+Wertes ein Pluszeichen, so ist der Wert kein absoluter Wert, sondern gilt
+relativ zum gedachten "Cursor", man kann also mit "y=+2" ein Bild auch zwei
+Zeilen unter der aktuellen Textzeile positionieren:
+    y=+0    Bild beginnt in der aktuellen Zeile (default)
+    y=+1    Bild beginnt eine Zeile tiefer
+Theoretisch kann man auch bei "x" Zahlen wie 1 oder -2 verwenden, praktisch
+gibt es dann aber Probleme mit dem Wordwrap, weil man in die 1 Zeichen
+breite Rest-"Textspalte" keinen sinnvollen Text rendern kann. Will man ein
+Bild etwas mehr nach "innen" rücken, sollte man also nicht die Bildposition
+ändern, sondern den Bildrand vergrößern (siehe weiter unten). Das heißt:
+Vertikal kann man Bilder beliebig anordnen, horizontal ist eigentlich nur
+"ganz rechts" oder "ganz links" sinnvoll. Oder mittig, aber dann sollte das
+Bild sehr schmal sein.
+Es sind auch ein paar Schlüsselwörter definiert, die man statt der Zahlen
+verwenden kann:
+    x=left      Bild steht ganz links (default)
+    x=center    Bild ist zentriert (Vorsicht, Bild sollte sehr schmal sein!)
+    x=right     Bild steht ganz rechts
+    x=goright   Bild steht rechts neben dem vorherigen
+    x=goleft    Bild steht links neben dem vorherigen
+    x=keep      Bild hat die gleiche x-Position wie das vorherige
+    y=top       Bild steht ganz oben auf der Seite
+    y=center    Bild ist vertikal zentriert
+    y=here      Bild beginnt in der aktuellen Zeile (default)
+    y=bottom    Bild steht ganz unten
+    y=godown    Bild steht unter dem vorherigen
+    y=goup      Bild steht über dem vorherigen
+    y=keep      Bild hat die gleiche y-Position wie das vorherige
+
+
+Parameter "above", "below", "left" und "right":
+
+Diese vier Parameter sorgen für freie Bereiche neben der Grafik, also quasi
+zusätzliche Ränder.
+
+Mit diesen Rändern kann man dafür sorgen, dass der Text nicht bis direkt an
+das Bild reicht, sondern Platz gelassen wird. Normalerweise werden die
+Ränder in kompletten Characters gemessen - sind die Zahlen allerdings zu
+groß, so geht der Bildbereich automatisch über die komplette Breite bzw.
+Höhe des Screens, und das Verhältnis der Zahlen gibt dann an, wo im Bereich
+sich das Bild befindet. Beispiele:
+    left=0,right=0
+        Bild wird nicht verbreitert (default).
+    right=3
+        Rechts vom Bild werden drei Spaces hinzugefügt.
+    above=2,below=4
+        Oben sind zwei Zeilen frei und unten vier.
+    left=20,right=80
+        Der Bildbereich geht über die komplette Breite des Screens, darin
+        wird das Bild so plaziert, dass rechts vier mal so viel Platz ist
+        wie links.
+
+
+Parameter "keepleft" und "keepright":
+
+Diese beiden Parameter sorgen dafür, dass der Text in den Grafikbereich
+hinein ragen kann - wie weit, hängt dann vom Motiv der Grafik ab.
+
+Mit diesen beiden Parameter sagt man dem Konverter, dass das Text-Layout
+nicht vom gedachten Rechteck um die Grafik abhängen soll, sondern direkt von
+den Pixeln, also dem Motiv der Grafik selbst. Beispiele:
+    keepleft=2
+        Der Text darf von links in den Grafikbereich hineinragen, es müssen
+        aber in jeder Zeile mindestens zwei Zeichen frei bleiben bis zum
+        ersten gesetzten Pixel der Grafik.
+    keepright=3
+        Der Text darf von rechts in den Grafikbereich hineinragen, es müssen
+        aber in jeder Zeile mindestens drei Zeichen frei bleiben zwischen
+        Grafikpixeln und Text.
+    keepleft=0,keepright=0
+        Der Text darf von beiden Seiten in die Grafik hineinragen und direkt
+        an Grafikpixel angrenzen (ob das gut aussieht, hängt vom Motiv ab).
+
+Für diese beiden Parameter gibt es keine "Defaultwerte", denn der Default
+ist ja, dass nicht das Motiv, sondern der Rechteckbereich beachtet wird.
+
+Ein gutes Beispiel für den Effekt dieser beiden Parameter findet sich in
+Ausgabe #111 der DT in der Datei 24.prg bei der Seitenansicht der
+Enterprise: Sowohl links oben als auch rechts unten wird Text innerhalb des
+Grafik-Rechtecks dargestellt.
+
+
+Verschiedenes:
+
+Bilder können nur dort plaziert werden, wo noch nichts ist. Ist der Platz
+bereits belegt, so kommt das Bild auf die nächste Seite, oder die
+übernächste, oder die überübernächste etc.
+Wenn man nicht aufpasst, kann das sogar die Reihenfolge der Bilder
+verändern!
+
+Nach dem Plazieren eines Bildes kann der Zeilenrest im Wordwrap-Buffer
+seltsame Effekte hervorrufen. Daher ist es am besten, wenn vor dem Befehl
+"^image" ein Zeilenumbruch forciert wird und der Buffer somit leer ist. Ein
+ähnliches Problem tritt auf, wenn ein Bild ganz am Anfang des Texts plaziert
+wird: Der Konverter startet ja im linksbündigen Textmodus und hat sich beim
+Start die aktuelle Zeilenlänge geholt. Durch das Bild ändert sich dieser
+Wert, daher sollte man in so einem Fall nach dem ^image-Befehl direkt mit
+^left einen neuen Absatz beginnen, damit die neue, korrekte Zeilenlänge
+benutzt wird.
+
+
+ 8.3 "tiny"-Grafiken
+~~~~~~~~~~~~~~~~~~~~~
+
+Will man eigene Sonderzeichen direkt im Text plazieren, kann man das per
+"tiny"-Grafiken erreichen. Dazu schreibt man
+
+[tiny:DATEINAME.PNG]
+
+direkt an der Stelle in den Text, wo die Grafik erscheinen soll. Das
+angegebene Bild darf aber nur maximal 8(!) Pixel hoch sein, daher eignet
+sich dieser Mechanismus nur für Ornamente oder eben Sonderzeichen.
+
+Für weitere Informationen über diesen Mechanismus siehe die Kapitel 4.3 und
+6.3.
+
+
+ 8.4 QR-Codes
+~~~~~~~~~~~~~~
+
+Der Konverter kann mit einem externen Python-Modul auch QR-Codes erzeugen,
+d.h. man schreibt im Text eine URL und in der DT erscheint dann ein 2D-Code
+(als Inline-Image oder als "big picture"), der mit einer entsprechenden
+Smartphone-App gescannt werden kann. Beispiel:
+
+^line 0
+^qr https://digital-talk.github.io/
+Scannt den QR-Code, um auf die DT-Seite zu gelangen!
+
+Wie bereits in Kapitel 1.4 angegeben:
+Um QR-Codes zu generieren, wird das Modul "qrcode" gebraucht. Zum Testen
+bitte einfach das Programm bzw. die Library "rework/bin/qrcodeutil.py"
+starten, da sieht man dann, ob das Modul auf dem System gefunden wurde und
+wie man es ggfs. nachinstalliert.
+
+Da man an einem echten C64 mit Monitor die horizontalen Pixel nicht
+unbedingt sauber trennen kann, werden die QR-Codes in doppelter Größe
+angezeigt, so dass jedes QR-Code-Bit durch 2x2 C64-Pixel dargestellt wird.
+Alternativ kann man die QR-Codes auch in vierfacher Größe darstellen, also
+mit 4x4 C64-Pixeln pro QR-Code-Bit. Beides hat seine Vor- und Nachteile, die
+weiter unten erläutert werden.
+
+Es gibt drei verschiedene Zeilenbefehle für QR-Codes, die letzten Endes alle
+das Gleiche tun und sich nur in einem Detail unterscheiden:
+
+^qr4 URL-STRING
+    zeigt den QR-Code in vierfacher Größe an (4x4 C64-Pixel pro Bit).
+^qr2 URL-STRING
+    zeigt den QR-Code in doppelter Größe an (2x2 C64-Pixel pro Bit).
+^qr URL-STRING
+    zeigt den QR-Code in doppelter oder in vierfacher Größe an, die
+    Entscheidung hängt von den Ausmaßen des Codes ab.
+
+Der Grund für die zwei verschiedenen "Zoomstufen" ist der, dass QR-Codes
+unterschiedliche Ausmaße haben können und deshalb manchmal besser als
+Inline-Image und manchmal besser als "big picture" kodiert werden sollten.
+Die Ausmaße eines QR-Codes hängen von der Länge des ursprünglichen URL-
+Strings ab und vom verwendeten Fehlerkorrektur-Algorithmus (aber der
+Konverter verwendet immer den einfachsten).
+Beispiele:
+
+^qr google.com                             erzeugt einen Code mit 21x21 Bits
+^qr https://digital-talk.github.io/        erzeugt einen Code mit 25x25 Bits
+^qr https://digital-talk.github.io/123     erzeugt einen Code mit 29x29 Bits
+^qr https://digital-talk.github.io/abcdefghijklmnopqrstuvw
+                                           erzeugt einen Code mit 33x33 Bits
+
+Die 2x2-Pixel-Darstellung braucht nicht viel Platz auf dem Bildschirm, aber
+der Speicher für die benutzerdefinierten Zeichensätze ist relativ schnell
+voll: Nach drei, vier oder fünf QR-Codes ist Schluss. Dafür passen aber auch
+"große" QR-Codes auf die Textseite.
+
+In der 4x4-Pixel-Darstellung sehen die Codes auf dem Bildschirm sehr groß
+aus, brauchen aber kaum Platz im benutzerdefinierten Zeichensatz (weil nur
+16 Kombinationsmöglichkeiten existieren). Somit passen theoretisch beliebig
+viele QR-Codes in einen Text.
+
+^qr IRGEND_EIN_TEXTSTRING
+    konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen als
+    Inline-Grafik rechts unten auf der nächstmöglichen Seite. Kleine Codes
+    werden mit 4x4 Pixeln pro Bit gerendert, um Platz im Charset zu sparen.
+    Codes, die zu groß für eine Seite wären, werden mit 2x2 Pixeln pro Bit
+    gerendert, dies braucht aber deutlich mehr Platz im Charset.
+    ACHTUNG: "Codes, die zu groß für eine Seite wären" gibt es nur, wenn man
+    den Konverter mit "--oldformat" aufruft, weil die Textseiten dann
+    kleiner sind als "big pictures".
+
+^qr2 IRGEND_EIN_TEXTSTRING
+    konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen als
+    Inline-Grafik rechts unten auf der nächstmöglichen Seite. Die Bits des
+    Codes werden mit 2x2 Pixeln gerendert, d.h. der Code nimmt nicht viel
+    Platz auf dem Bildschirm weg, aber dafür umso mehr Platz im Charset.
+    Benutzt man diesen Befehl zu oft, wird ein Fehler ausgegeben, wenn der
+    Platz im Charset erschöpft ist.
+
+^qr4 IRGEND_EIN_TEXTSTRING
+    konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen als
+    Inline-Grafik rechts unten auf der nächstmöglichen Seite, oder (falls zu
+    groß) mittig auf einer eigenen Grafikseite. Die Bits des Codes werden
+    mit 4x4 Pixeln gerendert, d.h. die Codes sehen riesengroß aus, brauchen
+    aber (solange sie inline sind) nur wenig Platz im Charset.
+    Dieser Befehl bietet sich an, wenn ein Text sehr viele QR-Codes enthält.
+    ACHTUNG: "Codes, die zu groß für eine Seite wären" gibt es nur, wenn man
+    den Konverter mit "--oldformat" aufruft, weil die Textseiten dann
+    kleiner sind als "big pictures".
+
+Da QR-Codes auf Textseiten derzeit immer unten rechts plaziert werden,
+belegt ein Text mit N Codes automatisch auch mindestens N Seiten. Wenn man
+viele Codes benutzt, sollte man also auch regelmäßig mit
+
+^line 0
+
+auf die nächste Seite springen, damit der zu einem QR-Code gehörende Text
+auch neben seinem QR-Code erscheint. Wenn man das vergisst, steht auf den
+ersten paar Seiten der Text, und dann folgen etliche Seiten nur mit
+QR-Codes.
+

@@ -1,0 +1,100 @@
+
+ Kapitel 7: Silbentrennung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In den Wordwrap-Modi versucht der Konverter, alle Zeilen möglichst voll zu
+bekommen und erzeugt immer dann einen Zeilenumbruch, wenn das nächste Wort
+nicht mehr in die aktuelle Zeile passt (als Wortgrenzen gelten dabei
+Leerzeichen und Bindestriche: "verbranntes Schokoladen-Fondue" sind also für
+den Konverter drei Wörter).
+Wenn man den dabei entstehenden Flatterrand unschön findet, kann man diesen
+etwas abmildern, indem man auch innerhalb von Wörtern Umbrüche erlaubt. Das
+geht mit "bedingten Trennstrichen" (englisch "soft hyphens"), die im
+fertigen Text nur dann als Trennstriche sichtbar werden, wenn das Wort
+tatsächlich an dieser Stelle umgebrochen wurde - wird das Wort hingegen
+nicht umgebrochen, so sind diese "soft hyphens" unsichtbar.
+Damit das funktioniert, müssen diese "soft hyphens" aber irgendwie in den
+Text eingefügt werden. Dafür gibt es derzeit drei Möglichkeiten:
+	7.1 manuelle Trennvorschläge im Wort
+	7.2 das Trennvorschlags-Wörterbuch
+	7.3 automatische Silbentrennung
+
+
+ 7.1 manuelle Trennvorschläge im Wort
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Man kann Trennvorschläge direkt im Text unterbringen, entweder direkt als
+Unicode-Codepoint U+00AD oder mit der Umschreibung "Backslash, gefolgt von
+einem Minuszeichen". Beispiel:
+
+ver\-brann\-tes Scho\-ko\-la\-den-Fon\-due
+
+Was vorher drei Wörter waren, sind jetzt neun Wortteile, und der Konverter
+kann eine passendere Stelle für den Zeilenumbruch aussuchen. Diese Methode
+funktioniert zwar, aber kaum jemand wird seine Texte so schreiben wollen,
+daher bietet sich das Verfahren hauptsächlich für Ausnahmefälle an, falls
+die anderen beiden (folgenden) Möglichkeiten versagen sollten.
+
+
+ 7.2 das Trennvorschlags-Wörterbuch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Um die Trennstellen eines Wortes nicht bei jeder Verwendung erneut angeben
+zu müssen, hat der Konverter ein internes Wörterbuch für diesen Zweck. Beim
+Programmstart ist dieses Wörterbuch leer, mit einem speziellen Zeilenbefehl
+kann man dann Wörter hinzufügen. Der Befehl lautet "^-" und direkt dahinter
+schreibt man das jeweilige Wort, wobei sämtliche möglichen Trennstellen mit
+Minuszeichen markiert sind. Beispiele:
+
+^-Scho-ko-la-de
+^-Pa-la-waum
+^-Sil-ben-tren-nung
+^-Bei-spiel
+^-Neozoon
+
+Wann immer der Konverter nach diesen Befehlen dann z.B. im Text auf das Wort
+"Schokolade" trifft, ersetzt er es intern durch "Scho\-ko\-la\-de" und somit
+kann der Wordwrap-Algorithmus passend umbrechen.
+
+Bei "Neozoon" sind gar keine Trennstellen angegeben und somit wird das Wort
+auch nie getrennt. Das erscheint erst einmal total sinnlos, kann aber
+nützlich sein, wenn die im nächsten Abschnitt erläuterte Methode ein
+"falsches" Ergebnis liefert.
+
+
+ 7.3 automatische Silbentrennung
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Die komfortabelste Möglichkeit ist die, dass man die Trennstellen gar nicht
+selbst angibt, sondern dies von externer Software erledigen lässt: wenn auf
+dem aktuellen System eine bestimmte Silbentrennungs-Software verfügbar ist,
+kann der Konverter auf diese zurückgreifen. Wie bereits in Kapitel 1.4
+angegeben:
+
+Für die automatische Silbentrennung wird einerseits das Python-Modul
+"pyphen" gebraucht, und außerdem müssen auf dem System die deutschen
+Silbentrenn-Daten vorhanden sein, auf die dieses Modul zugreift. Der
+einfachste Weg, diese Daten zu erhalten, ist eine Installation von
+LibreOffice.
+Zum Testen bitte einfach das Programm bzw. die Library
+"rework/bin/silbentrennung.py" starten, da sieht man dann, ob das Modul und
+die Silbentrennungs-Daten auf dem System gefunden wurden und wie man das
+Modul ggfs. nachinstalliert.
+
+Wird der Konverter mit der Kommandozeilenoption "--pyphen" gestartet, so
+versucht er sich über das pyphen-Modul mit der Silbentrenn-Library zu
+verbinden und dann wird jedes Wort des Eingabetexts durch diese Library
+geschoben, um die Trennstellen in Erfahrung zu bringen. Ein Wort wie
+"Schokolade" wird dann also intern automatisch durch "Scho\-ko\-la\-de"
+ersetzt und so kann der Wordwrap-Algorithmus immer passend umbrechen.
+
+Diese Methode funktioniert sehr zuverlässig; nur bei Fantasiewörtern,
+Eigennamen oder ähnlichen Spezialfällen muss man noch auf eine der anderen
+beiden Methoden ausweichen.
+Ein solcher Spezialfall ist z.B. das Wort "Diskimage", welches tatsächlich
+falsch getrennt wird ("Dis-kimage"). Lösung: Wie oben in Kapitel 7.2
+beschrieben, gibt man selbst die Trennstelle(n) vor:
+
+^-Disk-image
+^-Disk-images
+
