@@ -21,7 +21,9 @@ body {
     min-height: 30px;
 }
 #header img {
-    width: 100%;
+    width: 98%;
+    
+    width: 98vw;
     text-align: center;
 }
 #header h1 img {
@@ -61,7 +63,7 @@ h4{
     margin: 5px auto;
     padding: 5px auto;
     width:800px;
-    width: 100vw;
+    width:98vw;
 }
 .mbox {
     margin: 5px 0px;
