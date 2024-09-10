@@ -14,6 +14,7 @@ body {
     padding-bottom: 1px;
     top: 0;
     width: 100%;
+    width: 100vw;
     max-width:1000px;
     min-height: 30px;
 }
@@ -58,6 +59,7 @@ h4{
     margin: 5px auto;
     padding: 5px auto;
     width:800px;
+    width: 100vw;
 }
 .mbox {
     margin: 5px 0px;
