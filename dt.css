@@ -4,6 +4,8 @@ body {
     font-size:16px;
     margin:0.5em 0.5em 0.5em 0.5em;
     padding:0.5em 0.5em 0.5em 0.5em;
+    witdh: 98%;
+    widt: 98vw;
 }
 
 #header {
@@ -13,8 +15,8 @@ body {
     padding-top: 1px;
     padding-bottom: 1px;
     top: 0;
-    width: 100%;
-    width: 100vw;
+    width: 98%;
+    width: 98vw;
     max-width:1000px;
     min-height: 30px;
 }
@@ -154,6 +156,10 @@ table {
     border-collapse: collapse;
     margin-top: 16px;
     margin-bottom: 16px;
+    
+    width: 100%;
+    
+    width: 100vw;
 }
 
 tbody {
