@@ -2,97 +2,15 @@ body {
     background-color: #000;
     color: #ccc;
     font-size:16px;
-    margin:0.5em 0.5em 0.5em 0.5em;
-    padding:0.5em 0.5em 0.5em 0.5em;
+    margin:0.5em;
+    padding:0.5em;
 }
 
-#header {
-    margin-bottom: 16px;
-    margin-left:auto;
-    margin-right:auto;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    top: 0;
-    width: 100%;
-    max-width:1000px;
-    min-height: 30px;
-}
-#header img {
-    width: 100%;
-    text-align: center;
-}
-#header h1 img {
-    margin: 0;
-    vertical-align: top;
-}
-
-h1 {
-    margin:.5em 0 .5em 0;
-    border:0px solid white;
-
-    font-size:32px;
-    font-weight:normal;
-}
-h2 {
-    margin:.5em 0 .5em 0;
-    border:0px solid white;
-
-    font-size:130%;
-    font-weight:normal;
-}
-h3{
-    margin:.5em 0 .5em 0;
-    border:0px solid;
-
-    font-size:110%;
-    font-weight:bold;
-}
-h4{
-    margin:1em 0 .5em .5em;
-    border:0px solid;
-
-    font-size:100%;
-    font-weight:bold;
-}
-.main {
-    margin: 5px auto;
-    padding: 5px auto;
-    width:800px;
-}
-.mbox {
-    margin: 5px 0px;
-    padding: 5px;
-    width:368px;
-    float:left;
-}
-.fbox {
-    border: 2px solid white;
-    padding: 20px;
-    margin: 5px 0px;
-    overflow:auto;
-} 
-
-.deadline {
-    background-color:white;
-    color:black;
-    padding: 10px;
-    margin: 5px 0px;
-    font-size:1.5em;
-    font-weight:bold;
-    text-align:center;
-} 
-
-.links {
-    border: 2px solid white;
-    padding: 20px;
-    margin: 5px 0px;
-    overflow:auto;
-} 
 p {
     font-size:16px;
-    margin-left:0.5em;
-    margin-bottom:0.5em;
+    margin:1.5em 0 0.5em 0;
     padding:0;
+    max-width:35em;
 }
 ul {
     padding-left:2.25em;
@@ -101,27 +19,7 @@ li {
     list-style-type:square;
 }
 li p {
-    margin-left:0em;   
-}
-
-b {
-    font-weight:bold;
-}
-strong {
-    font-weight:bold;
-    color: red;
-    font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
-}
-tt {
-    font-weight:bold;
-    margin:0em 0em 0em 0em;
-}
-pre {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    font-weight:bold;
-    font-size:120%;
-    font-style:fixed;
+    margin-left:0em;
 }
 
 a {
@@ -129,41 +27,62 @@ a {
     text-decoration: underline;
 }
 
-dt {
-    font-size: 18px;
-}
-
-dd {
-    margin-left: 16px;
-    padding-bottom: 16px;
-}
-
-dl {
-    padding-bottom: -16px;
-}
-
-img {
-    border:0px solid white;
-    /* text-align:justify; */
-    margin:0.5em 0.1em 0.5em 0.1em;
-}
-
-table {
-    border-collapse: collapse;
-    margin-top: 16px;
-    margin-bottom: 16px;
-}
-
-tbody {
-    border: 2px solid #333;
-}
-
-thead {
-    background-color: #111;
+h1 {
+    margin:0px;
+    font-size:32px;
     font-weight:bold;
 }
 
-th, td {
-    border: 2px solid #222;
-    padding: 4px 8px;
+h2:first-child {
+    margin:0px;
+}
+
+h2 {
+    margin:2em 0 0 0;
+    border:0px;
+    font-size:120%;
+    font-weight:normal;
+}
+
+#header {
+    margin-bottom: 2em;
+    margin-top: 1em;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0px;
+    width: 100%;
+    text-align: center;
+}
+#header img {
+    width: 100%;
+    max-width:1000px;
+    margin: 0;
+}
+#header .willkommen {
+    font-size:130%;
+}
+#header p {
+    margin:0px;
+    max-width:inherit;
+}
+
+.main {
+    margin: 0px auto;
+    padding: 0px;
+    width: 38em;
+}
+
+.fbox {
+    border: 2px solid white;
+    padding: calc(1.5em - 2px);
+    margin: 5px 0px;
+    overflow:auto;
+}
+
+iframe {
+    width: 35em;
+    height: 25em;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
 }
