@@ -1,0 +1,40 @@
+
+FIXME: eine leere Eingabedatei erzeugt ein PRG-File ohne Seiten, das Magsys
+zeigt dann lustige Dinge an.
+
+FIXME: Wenn man mit [# ... ] einen Block auskommentiert, werden einige
+^-Befehle darin trotzdem ausgeführt! Sachen wie "^right" werden ignoriert,
+aber "^image" wird früher abgearbeitet und daher nicht ignoriert.
+
+Es fehlt noch eine komfortable Möglichkeit, die vordefinierten 2x2-Icons auf
+Textseiten zu plazieren - derzeit kann man sie nur wie Buchstaben
+positionieren.
+
+Derzeit werden QR-Codes entweder mittig auf separaten Grafikseiten
+angezeigt, oder rechts unten auf Textseiten. Es fehlt noch ein Befehl, um
+analog zum Befehl "^image" auch für "^qr" anzugeben, wo und wie die Grafik
+positioniert werden soll. Vielleicht will man ja doch einmal zwei QR-Codes
+auf der gleichen Seite darstellen ("links die deutsche Webseite, rechts die
+englische").
+
+Einige ASCII-Zeichen wie z.B die eckigen Klammern fehlen zwar in den
+DT-Schriften, aber da sie sogar in PetSCII vorhanden sind, will man sie
+evtl. doch auch mal in Texten verwenden. Da wäre es gut, wenn man sie
+wenigstens mit der Tilde quoten könnte, so dass sie dann als
+benutzerdefinierte Zeichen eingefügt würden.
+
+Analog zu "non-breaking spaces" sollte es eigentlich auch "non-breaking
+hyphens" geben, also Bindestriche bzw. Minuszeichen, bei denen nicht
+umgebrochen wird.
+
+Evtl. einen Befehl hinzufügen, der QR Codes explizit als big pictures
+erzeugt?
+
+Die selbstdefinierten Grafikzeichen werden derzeit nicht daraufhin
+überprüft, ob sie evtl. schon in den vorhandenen Charsets vorkommen!
+
+Evtl. ein Befehl, um die Schrift aus dem Char-ROM zu benutzen? Die dann ans
+Ende des Speichers kopieren, so dass man weniger eigene Zeichen hätte?
+
+Vielleicht Unterstützung für 2x2-Schriftarten, wie sie im Editorial der DT
+#25 verwendet wurden?
