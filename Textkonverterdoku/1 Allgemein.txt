@@ -57,7 +57,7 @@ Compiler, per Kommandozeile aufgerufen: Das Programm liest eine
 
 	txt_to_prg.py [SCHALTER] EINGABEDATEI.TXT [AUSGABEDATEI.PRG]
 
-Es gibt drei optionale Schalter:
+Es gibt vier optionale Schalter:
 
 	--pyphen
 		aktiviert die automatische Silbentrennung, siehe Kapitel 7.
@@ -65,6 +65,8 @@ Es gibt drei optionale Schalter:
 		erzeugt Seiten mit 40x16 Zeichen statt 40x25 Zeichen.
 	--ansi
 		benutzt ANSI-Codes für die Vorschau auf der Konsole.
+	--pages X..Y
+		schränkt die Vorschau auf bestimmte Seiten ein.
 
 Hat der Benutzer gar keine Ausgabedatei angegeben, wird das Resultat auf der
 Konsole ausgegeben, so kann der Benutzer schnell und einfach das Ergebnis
@@ -112,7 +114,12 @@ die Datei in das Verzeichnis mit den PRG-Dateien speichern. Wenn man nicht
 immer "../chapter" tippen will, kann man als Ausgabedatei auch "auto"
 angeben, dann wird der Name der Ausgabedatei automatisch erzeugt. Das klappt
 aber nur, wenn man sich im richtigen Verzeichnis befindet und der Name der
-Eingabedatei mit zwei Ziffern anfängt.
+Eingabedatei mit einer Ziffer anfängt. Das zweite Zeichen muss ebenfalls
+eine Ziffer sein, oder ein Buchstabe aus dem Bereich von "a" bis "j".
+
+Beim Layouten langer Texte kann man den Schalter "--pages" benutzen, um die
+Vorschau auf der Konsole auf bestimmte Seiten zu beschränken: "--pages 3"
+zeigt nur Seite 3 an, "--pages 3..7" zeigt nur die Seiten 3 bis 7.
 
 ...und am Ende das Einchecken der PRG-Datei nicht vergessen!
 

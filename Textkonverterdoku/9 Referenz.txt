@@ -127,8 +127,8 @@ Zeilenbefehle für vertikale Formatierung:
 	Bereich, der übrig bleibt, wenn man sich den oberen und unteren
 	Seitenrand weg denkt.
 	Beispiele:
-		^line 0              gleichbedeutung mit einem Seitenumbruch
-		^line -1             geht zur untersten Zeile
+^line 0         gleichbedeutung mit einem Seitenumbruch
+^line -1        geht zur untersten Zeile
 
 ^minfree ZEILEN
 	sorgt für einen Seitenumbruch, falls auf der aktuellen Seite weniger
@@ -148,7 +148,7 @@ Zeilenbefehl für Makros:
 	(einzeiligen!) Definition durch "\n" getrennt werden. So kann die
 	Definition auch mehrere Zeilenbefehle enthalten.
 	Beispiel:
-		^set signature=\n^right\nEuer Dr_Blutig\\
+^set signature=\n^right\nEuer Dr_Blutig\\
 	Den größten Nutzen bringt dieser Befehl, wenn man sich damit eigene
 	"Formatvorlagen" definiert, zum Beispiel Makros namens [a] und [k],
 	mit denen man dann Absätze und Kapitel einleitet. Mit einer kleinen
@@ -164,16 +164,6 @@ Zeilenbefehle für seitenfüllende Grafiken (bis 320x200 Pixel):
 	keinen Unterschied zwischen den beiden Befehlen, "^titlepic" ist
 	einfach nur der neue Name, da mir "^bigpicture" nicht eindeutig
 	genug erschien.
-^clearpic FILENAME.png
-	zeigt *nach* dem "title pic", statt den Bildschirm zu löschen, das
-	angegebene Bild an. Achtung, dieses Feature ist inzwischen
-	hinfällig, da es mit dem neuen Seitenformat nicht mehr funktioniert:
-	Früher blieben oben vier und unten fünf Zeilen permanent sichtbar,
-	da in diesen Bereichen kein Text angezeigt wurde. Um das Feature
-	heute sinnvoll einzusetzen, muss man über die Kommandozeilenoption
-	"--oldformat" das alte Ausgabeformat erzwingen.
-	Siehe "beispiel-clearpic.png" hier in diesem Verzeichnis für eine
-	Vorlage.
 ^pagepic FILENAME.png
 	fügt das angegebene Bild als eigene Seite in den Text ein.
 
@@ -189,7 +179,7 @@ Zeilenbefehl für inline-Grafik (bis 320x200 Pixel):
 	above=OBEN,below=UNTEN,left=LINKS,right=RECHTS      Rand um das Bild
 	keepleft=LINKS,keepright=RECHTS                       beliebige Form
 	Beispiel:
-		^image albern.png,x=-1,below=2,keepleft=1
+^image albern.png,x=-1,below=2,keepleft=1
 	Für weitere Details siehe Kapitel 8.2.
 
 
@@ -203,9 +193,10 @@ Zeilenbefehle für QR-Codes:
 	Pixeln pro Bit gerendert, dies braucht aber deutlich mehr Platz im
 	Charset.
 	Beispiel:
-		^line 0
-		^qr https://digital-talk.github.io/
-		Scannt den QR-Code, um auf die DT-Seite zu gelangen!
+^line 0
+^qr https://digital-talk.github.io/
+Scannt den QR-Code, um auf die DT-Seite zu gelangen!
+
 ^qr2 IRGEND_EIN_TEXTSTRING
 	konvertiert den Rest der Zeile in einen QR-Code und plaziert diesen
 	als inline-Grafik rechts unten auf der nächstmöglichen Seite. Die
@@ -222,16 +213,25 @@ Zeilenbefehle für QR-Codes:
 	enthält.
 
 
-Zeilenbefehl für Silbentrennungs-Wörterbuch:
+Zeilenbefehle für Silbentrennung:
 
 ^-SIL-BEN-GE-TRENNT
 	Der Befehl übernimmt den Rest hinter dem ersten Minus ins
 	Silbentrennungs-Wörterbuch.
 	Beispiele:
-		^-Scho-ko-la-de
-		^-Trenn-vor-schlag
-		^-Sil-ben-tren-nung
-		^-Bei-spiel
-		^-Neozoon       das wird jetzt überhaupt nicht mehr getrennt
+^-Scho-ko-la-de
+^-Trenn-vor-schlag
+^-Sil-ben-tren-nung
+^-Bei-spiel
+^-Neozoon       das wird jetzt überhaupt nicht mehr getrennt
 	Für weitere Details siehe Kapitel 7.2.
+
+^forbid_pyphen
+	Dieser Befehl deaktiviert die vollautomatische Silbentrennung, z.B.
+	damit ein ohne Silbentrennung fertig layouteter Text später nicht
+	durch Neukonvertierung _mit_ Silbentrennung versehentlich
+	umformatiert wird.
+	Achtung, dieser Befehl funktioniert nur dann korrekt, wenn er ganz
+	am Anfang der Datei, vor allen Textzeilen benutzt wird!
+	Für weitere Details siehe Kapitel 7.3.
 

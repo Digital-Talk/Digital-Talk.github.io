@@ -131,3 +131,11 @@ Sonderzeichen (daher ja auch das Präfix "tiny").
 Für weitere Informationen über diesen Mechanismus siehe die Kapitel 4.3 und
 8.3, für größere Grafiken siehe den Rest von Kapitel 8.
 
+Statt einer PNG-Datei kann man die Grafik auch direkt über die verwendeten
+Bitmap-Bytewerte definieren. Dafür schreibt man
+
+[hex:UNDDIEHEXZIFFERN]
+
+an der Stelle in den Text, wo die Grafik bzw. das Sonderzeichen erscheinen
+soll. Für weitere Informationen über diesen Mechanismus siehe Kapitel 4.4
+

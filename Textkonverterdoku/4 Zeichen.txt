@@ -7,6 +7,7 @@ erzeugt. Man kann diese Zeichen grob in drei Kategorien einteilen:
 	4.1 Steuerzeichen mit Backslash
 	4.2 Sonderzeichen mit Tilde
 	4.3 eigene Zeichen mit [tiny:*.png]
+	4.4 eigene Zeichen mit [hex:HEXZIFFERN]
 
 
  4.1 Steuerzeichen mit Backslash
@@ -85,7 +86,7 @@ Ergebnis auch rechts in der Grafik "beispiel-stile.png" besichtigen.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Wenn das Pythonmodul für Grafik-Unterstützung installiert ist, kann man auch
-eigene Zeichen (wie 'é') in den Text einfügen. Das Zeichen muss als 8x8
+eigene Zeichen (wie '¥') in den Text einfügen. Das Zeichen muss als 8x8
 Pixel große PNG-Grafik mit zwei Farben vorliegen, dabei wird die dunklere
 Farbe als Schriftfarbe und die hellere Farbe als Hintergrundfarbe
 interpretiert. Um das Zeichen einzufügen, schreibt man im Text einfach
@@ -94,4 +95,17 @@ Klammern.
 
 Für weitere Informationen über diesen Mechanismus siehe die Kapitel 6.3 und
 8.3.
+
+
+ 4.4 eigene Zeichen mit [hex:HEXZIFFERN]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Wenn man für ein einzelnes Zeichen keine PNG-Grafik bemühen will, kann man
+auch die acht Bytewerte für das Zeichen direkt als Hexwerte angeben. Dafür
+schreibt man einfach [hex:UNDDIEHEXZIFFERN] in den Text. Für ein 8x8-Pixel-
+Quadrat und direkt daneben ein 6x6-Pixel-Quadrat würde man also schreiben:
+[hex:ff818181818181ff007e424242427e00]
+Da jedes Zeichen exakt acht Bytes benötigt und jedes Byte durch zwei
+Hexziffern angegeben wird, muss die Anzahl der Hexziffern logischerweise
+immer ein Vielfaches von 16 sein.
 

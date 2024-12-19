@@ -25,7 +25,7 @@ akzeptieren.
 ~~~~~~~~~~~~~
 
 In den Zeichensätzen der DT fehlen einige der üblichen ASCII-Zeichen,
-nämlich diese: [ \ ] ^ ` { } ~
+nämlich diese: [ \ ] ^ { } ~
 Daher haben diese Zeichen Sonderbedeutungen für den Konverter bekommen:
 
 '[' und ']'
@@ -45,10 +45,6 @@ Steht das Zeichen weiter rechts, so hat es eine völlig andere Bedeutung: es
 dient dann als Spaltentrenner, hauptsächlich im Zwei-Spalten-Modus, siehe
 Kapitel 3.4.
 
-'`'
-Das Zeichen '`' wird derzeit nicht benutzt, da es leicht mit '´' und '''
-verwechselt werden kann.
-
 '{' und '}'
 Geschweifte Klammern innerhalb des Textes ändern die Schriftart, hinter den
 Klammern gilt dann wieder die vorige Einstellung. Siehe Kapitel 5.
@@ -60,12 +56,19 @@ Alle anderen Zeichen werden direkt in den Ausgabetext übernommen, soweit das
 DT-Magsystem diese Zeichen unterstützt oder zumindest passende Äquivalente
 vorhanden sind:
 So werden z.B. doppelte Anführungszeichen wie '“', '”' und '„' alle zu '"'
-konvertiert, und einfache Anführungszeichen werden zum Apostroph '.
+konvertiert, und einfache Anführungszeichen und die beiden Accents werden
+zum Apostroph "'" konvertiert.
+Es werden auch einige wenige akzentuierte Zeichen unterstützt, nämlich
+derzeit "àçéè↑". Diese sind aber nicht in den vordefinierten DT-Schriften
+vorhanden und werden daher wie winzige Inline-Grafiken behandelt.
+Insbesondere bedeutet das, dass diese Zeichen derzeit nur in "normaler"
+Schreibweise, aber nicht in fetter Schreibweise angezeigt werden.
 
 
  2.3 Zeilen
 ~~~~~~~~~~~~
 
+#-Kommentare:
 Beginnt eine Zeile mit dem Zeichen '#', so ist sie ein Kommentar und wird
 komplett ignoriert. Damit kann man sich z.B. ein "40-Zeichen-Lineal" machen,
 oder eben Dinge in den Text schreiben, die in der Ausgabe nicht auftauchen
@@ -79,11 +82,13 @@ Wenn man wirklich ein '#' am Anfang einer Zeile braucht, z.B. weil es eben
 in der Ausgabedatei so stehen soll, so schreibt man stattdessen "~#", siehe
 dazu auch Kapitel 4.2.
 
+^-Befehle:
 Beginnt eine Zeile mit dem Zeichen '^', so wird die ganze Zeile als Befehl
 interpretiert. Mit diesen Zeilenbefehlen kann man z.B. die Ausrichtung des
 Texts ändern (siehe Kapitel 3) oder Bilder einfügen (siehe Kapitel 8). Eine
 Liste aller Zeilenbefehle findest Du in Kapitel 9.4.
 
+alles andere:
 Alle anderen Zeilen sind normale Textzeilen und ihr Inhalt landet, ggfs.
 umformatiert, im Output.
 

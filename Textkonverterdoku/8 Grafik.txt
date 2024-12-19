@@ -45,19 +45,6 @@ verändern. Für "big pictures" sind diese Befehle definiert:
     Es gibt keinen Unterschied zwischen den beiden Befehlen, "titlepic" ist
     einfach nur der neue Name, da ich den alten Namen "bigpicture" nicht
     aussagekräftig genug fand.
-^clearpic FILENAME.png
-    ...zeigt _nach_ dem "title pic", statt den Bildschirm zu löschen, das
-    angegebene Bild an. Davon blieben dann oben vier und unten fünf Zeilen
-    permanent sichtbar, da in diesen Bereichen kein Text angezeigt wurde.
-    Dieses Feature wurde in Ausgabe #25 der DT benutzt und möglicherweise
-    seitdem nie wieder. Inzwischen ist es auch nicht mehr sinnvoll
-    verwendbar, da die Textseiten jetzt den kompletten Bildschirm abdecken
-    und vom clearpic somit nichts mehr permanent übrig bleibt.
-    Eine Vorlage für Eigenkreationen befindet sich in der Datei
-    "beispiel-clearpic.png", dort sind die drei Bereiche deutlich sichtbar
-    abgegrenzt. Um das Feature sinnvoll zu nutzen, muss aber eine Textdatei
-    im "alten Modus", d.h. mit nur 16 Textzeilen pro Seite erzeugt werden,
-    dies geht derzeit nur über die Kommandozeilenoption "--oldformat".
 ^pagepic FILENAME.png
     ...fügt das angegebene Bild als eigene Seite in den Text ein, es bekommt
     also eine Seitennummer und somit kann man auch später wieder dahin
@@ -79,8 +66,8 @@ als Beispiel die gepackten Größen von den "big pictures" der Ausgabe #111:
     52.prg: 3547 Bytes (Rapidfire)
 Wenn man sich die ursprünglichen PNGs (in rework/data/111/chapter-txt)
 ansieht, versteht man auch den Grund: Das "Briley Witch"-Bild enthält kaum
-große Flächen, während das Chesscard-Bild und das Enterprise-Bild eigentlich
-nur große Flächen enthalten.
+große Flächen, während das Chesscard-Bild (finalcc) und das Enterprise-Bild
+eigentlich nur große Flächen enthalten.
 
 
  8.2 inline-Grafik

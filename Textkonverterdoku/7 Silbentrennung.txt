@@ -27,7 +27,7 @@ Man kann Trennvorschläge direkt im Text unterbringen, entweder direkt als
 Unicode-Codepoint U+00AD oder mit der Umschreibung "Backslash, gefolgt von
 einem Minuszeichen". Beispiel:
 
-ver\-brann\-tes Scho\-ko\-la\-den-Fon\-due
+	ver\-brann\-tes Scho\-ko\-la\-den-Fon\-due
 
 Was vorher drei Wörter waren, sind jetzt neun Wortteile, und der Konverter
 kann eine passendere Stelle für den Zeilenumbruch aussuchen. Diese Methode
@@ -41,10 +41,11 @@ die anderen beiden (folgenden) Möglichkeiten versagen sollten.
 
 Um die Trennstellen eines Wortes nicht bei jeder Verwendung erneut angeben
 zu müssen, hat der Konverter ein internes Wörterbuch für diesen Zweck. Beim
-Programmstart ist dieses Wörterbuch leer, mit einem speziellen Zeilenbefehl
-kann man dann Wörter hinzufügen. Der Befehl lautet "^-" und direkt dahinter
-schreibt man das jeweilige Wort, wobei sämtliche möglichen Trennstellen mit
-Minuszeichen markiert sind. Beispiele:
+Programmstart enthält dieses Wörterbuch einige wenige Wörter (siehe weiter
+unten), mit einem speziellen Zeilenbefehl kann man dann Wörter hinzufügen.
+Der Befehl lautet "^-" und direkt dahinter schreibt man das jeweilige Wort,
+wobei sämtliche möglichen Trennstellen mit Minuszeichen markiert sind.
+Beispiele:
 
 ^-Scho-ko-la-de
 ^-Pa-la-waum
@@ -59,7 +60,7 @@ kann der Wordwrap-Algorithmus passend umbrechen.
 Bei "Neozoon" sind gar keine Trennstellen angegeben und somit wird das Wort
 auch nie getrennt. Das erscheint erst einmal total sinnlos, kann aber
 nützlich sein, wenn die im nächsten Abschnitt erläuterte Methode ein
-"falsches" Ergebnis liefert.
+falsches Ergebnis liefert.
 
 
  7.3 automatische Silbentrennung
@@ -91,10 +92,50 @@ ersetzt und so kann der Wordwrap-Algorithmus immer passend umbrechen.
 Diese Methode funktioniert sehr zuverlässig; nur bei Fantasiewörtern,
 Eigennamen oder ähnlichen Spezialfällen muss man noch auf eine der anderen
 beiden Methoden ausweichen.
-Ein solcher Spezialfall ist z.B. das Wort "Diskimage", welches tatsächlich
-falsch getrennt wird ("Dis-kimage"). Lösung: Wie oben in Kapitel 7.2
+Ein solcher Spezialfall war z.B. das Wort "Diskimage", welches tatsächlich
+falsch getrennt wurde ("Dis-kimage"). Lösung: Wie oben in Kapitel 7.2
 beschrieben, gibt man selbst die Trennstelle(n) vor:
 
 ^-Disk-image
 ^-Disk-images
+
+Damit man das nicht in jedem Text erneut machen muss, wurde inzwischen ganz
+oben in der Datei "rework/bin/silbentrennung.py" eine Ausnahmen-Liste
+angelegt. Das heißt: Wenn man ein Wort findet, das von der automatischen
+Silbentrennung _definitiv_falsch_ getrennt wird, dann editiert man die
+besagte Datei und behebt damit das Problem nicht nur für den aktuellen Text,
+sondern gleich auch noch für alle zukünftigen Ausgaben der DT.
+Das Wort "Diskimage" ist daher jetzt kein Problem mehr, denn es steht nun
+mit seinen korrekten Trennstellen in der besagten Liste.
+
+Um möglichst schnell herausfinden zu können, an welchen Stellen der
+Algorithmus trennen würde, kann man die Wörter dem Programm
+"rework/bin/silbentrennung.py" direkt als Argumente übergeben. Beispiel:
+
+	python3 bin/silbentrennung.py Pfefferminz Klavier Palawaum
+
+gibt aus:
+
+	Test: Pfefferminz -> Pfef-fer-minz
+	Test: Klavier -> Kla-vier
+	Test: Palawaum -> Pa-la-waum
+
+Wie man sieht, sind die Wörter korrekt getrennt und müssen daher nicht in
+die Liste eingetragen werden.
+
+
+Falls man einen Text absichtlich _ohne_ automatische Silbentrennung layoutet
+hat und verhindern will, dass er später versehentlich _mit_ Silbentrennung
+neu konvertiert wird (was das Layout verhunzen könnte), kann man den Befehl
+
+^forbid_pyphen
+
+ganz oben in die Textdatei schreiben. Dieser Befehl sorgt dann dafür, dass
+pyphen nicht genutzt wird, selbst wenn es via Kommandozeilenschalter
+gewünscht wurde. Achtung, der Befehl funktioniert nur dann korrekt, wenn er
+wirklich ganz oben in der Datei steht, vor sämtlichen Textzeilen: Man kann
+bei einem 20-Seiten-Text nicht auf Seite 19 "die Silbentrennung abschalten",
+denn zu diesem Zeitpunkt befinden sich bereits sämtliche Wörter der vorigen
+18 Seiten mit ihren Trennvorschlägen im internen Wörterbuch, und somit
+würden sie auch auf den Seiten 19 und 20 noch getrennt.
 
