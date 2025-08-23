@@ -87,6 +87,19 @@ iframe {
     padding: 0px;
 }
 
+#fortschritt {
+    margin-top: 1.5em;
+}
+
+#fortschritt p {
+    font-size:10px;
+    background:#4d44ff;
+    color:#ffffff;
+    margin-top:0px;
+    max-width:inherit;
+    padding-left:1px;
+}
+
 @media screen and (max-width: 40em)
 {
   .main {
